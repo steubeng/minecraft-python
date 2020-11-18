@@ -83,7 +83,7 @@ def clearSpace(pos, sizeX, sizeZ):
     mc.setBlocks(pos.x-2, pos.y, pos.z-2, pos.x+sizeX+2, pos.y+100, pos.z+sizeZ+2, 0)
 
 def house(pos, sizeX, sizeZ):
-    print("house:", sizeX, "x", sizeZ)
+    print("house:", sizeX, "x", sizeZ, "at", pos)
     clearSpace(pos, sizeX, sizeZ)
     floor(pos, sizeX, sizeZ)
     frontAndBackWall(pos, sizeX, sizeZ, wallHeight)
