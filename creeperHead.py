@@ -60,7 +60,7 @@ def creeperHead(pos):
     mc.setBlock(pos.x+5, pos.y+4, pos.z+7, 35, 5)
 
     # layer 6
-    mc.setBlock(pos.x+5, pos.y+5, pos.z+0, 35, 15)
+    mc.setBlock(pos.x+5, pos.y+5, pos.z+0, 35, 5)
     mc.setBlock(pos.x+5, pos.y+5, pos.z+1, 35, 15)
     mc.setBlock(pos.x+5, pos.y+5, pos.z+2, 35, 15)
     mc.setBlock(pos.x+5, pos.y+5, pos.z+3, 35, 5)
