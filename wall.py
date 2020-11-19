@@ -34,20 +34,24 @@ while(True):
         
         # do these now
         if (direction == 'n'):
-            mc.setBlocks(currentPos.x-2, currentPos.y, currentPos.z-2, currentPos.x+2, currentPos.y+4, currentPos.z-2, block.AIR)
+            mc.setBlocks(currentPos.x-2, currentPos.y-1, currentPos.z-2, currentPos.x+2, currentPos.y+3, currentPos.z-3, block.AIR)
+            mc.setBlocks(currentPos.x-1, currentPos.y+4, currentPos.z-2, currentPos.x+1, currentPos.y+4, currentPos.z-3, block.AIR)
         elif (direction == 's'):
-            mc.setBlocks(currentPos.x-2, currentPos.y, currentPos.z+2, currentPos.x+2, currentPos.y+4, currentPos.z+2, block.AIR)
+            mc.setBlocks(currentPos.x-2, currentPos.y-1, currentPos.z+2, currentPos.x+2, currentPos.y+3, currentPos.z+3, block.AIR)
+            mc.setBlocks(currentPos.x-1, currentPos.y+4, currentPos.z+2, currentPos.x+1, currentPos.y+4, currentPos.z+3, block.AIR)
         elif (direction == 'e'):
-            mc.setBlocks(currentPos.x+2, currentPos.y, currentPos.z-2, currentPos.x+2, currentPos.y+4, currentPos.z+2, block.AIR)
+            mc.setBlocks(currentPos.x+2, currentPos.y-1, currentPos.z-2, currentPos.x+3, currentPos.y+3, currentPos.z+2, block.AIR)
+            mc.setBlocks(currentPos.x+2, currentPos.y+4, currentPos.z-1, currentPos.x+3, currentPos.y+4, currentPos.z+1, block.AIR)
         elif (direction == 'w'):
-            mc.setBlocks(currentPos.x-2, currentPos.y, currentPos.z-2, currentPos.x-2, currentPos.y+4, currentPos.z+2, block.AIR)
+            mc.setBlocks(currentPos.x-2, currentPos.y-1, currentPos.z-2, currentPos.x-3, currentPos.y+3, currentPos.z+2, block.AIR)
+            mc.setBlocks(currentPos.x-2, currentPos.y+4, currentPos.z-1, currentPos.x-3, currentPos.y+4, currentPos.z+1, block.AIR)
             
         
         startSize = len(queue)
         
         # main wall, 3m thick
         queue.append(Vec3(currentPos.x+1, currentPos.y-3, currentPos.z+1)) # conrer 1
-        queue.append(Vec3(currentPos.x-1, mc.getHeight(currentPos.x, currentPos.z)-3, currentPos.z-1)) # corner 2
+        queue.append(Vec3(currentPos.x-1, min(currentPos.y-3, mc.getHeight(currentPos.x, currentPos.z)-3), currentPos.z-1)) # corner 2
         queue.append(block.MOSS_STONE) # block id
         
         # top of wall, 1 layer, 3m thick
