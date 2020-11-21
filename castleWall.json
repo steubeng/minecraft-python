@@ -1,0 +1,34 @@
+{
+	"config": {
+		"minWallHeight": 5,
+		"maxWallHeight": 18,
+		"initialHeading": 90,
+		"penDown": "True"
+		},
+	"path": [
+		{"cmd": "pen", "argv": "down"},
+		{"cmd": "move", "argv": 10},
+		{"cmd": "right", "argv": 90},
+		{"cmd": "move", "argv": 10},
+		{"cmd": "right", "argv": 90},
+		{"cmd": "move", "argv": 10},
+		{"cmd": "left", "argv": 90},
+		{"cmd": "move", "argv": 20},
+		{"cmd": "right", "argv": 90},
+		{"cmd": "move", "argv": 10},
+		{"cmd": "right", "argv": 90},
+		{"cmd": "move", "argv": 20},
+		{"cmd": "left", "argv": 90},
+		{"cmd": "move", "argv": 10},
+		{"cmd": "right", "argv": 90},
+		{"cmd": "move", "argv": 10},
+		{"cmd": "right", "argv": 90},
+		{"cmd": "move", "argv": 10},
+		{"cmd": "left", "argv": 90},
+		{"cmd": "move", "argv": 10},
+		{"cmd": "right", "argv": 90},
+		{"cmd": "move", "argv": 10},
+		{"cmd": "right", "argv": 90},
+		{"cmd": "move", "argv": 10}		
+	]
+}
