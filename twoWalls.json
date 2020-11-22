@@ -1,0 +1,21 @@
+{
+	"config": {
+		"minWallHeight": 5,
+		"maxWallHeight": 10,
+		"initialHeading": 0,
+		"penDown": true,
+		"wallColor": 48,
+		"allureColor": 98,
+		"turretColor": 155,
+		"wallThickness": 3,
+		"allure": true
+		},
+	"path": [
+		{"cmd": "color", "argv": 48},
+		{"cmd": "pen", "argv": "down"},
+		{"cmd": "move", "argv": 10},
+		{"cmd": "right", "argv": 90},
+		{"cmd": "turret", "argv": ""},
+		{"cmd": "move", "argv": 10}
+	]
+}

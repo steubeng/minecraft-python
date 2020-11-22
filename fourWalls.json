@@ -1,0 +1,29 @@
+{
+	"config": {
+		"minWallHeight": 4,
+		"maxWallHeight": 8,
+		"initialHeading": 0,
+		"penDown": true,
+		"wallColor": 48,
+		"allureColor": 98,
+		"turretColor": 98,
+		"wallThickness": 3,
+		"allure": true
+		},
+	"path": [
+		{"cmd": "pen", "argv": "down"},
+		{"cmd": "move", "argv": 6},
+		{"cmd": "right", "argv": 90},
+		{"cmd": "turret", "argv": ""},
+		{"cmd": "move", "argv": 21},
+		{"cmd": "right", "argv": 90},
+		{"cmd": "turret", "argv": ""},
+		{"cmd": "move", "argv": 21},
+		{"cmd": "right", "argv": 90},
+		{"cmd": "turret", "argv": ""},
+		{"cmd": "move", "argv": 21},
+		{"cmd": "right", "argv": 90},
+		{"cmd": "turret", "argv": ""},
+		{"cmd": "move", "argv": 6}
+	]
+}
