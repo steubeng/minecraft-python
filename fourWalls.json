@@ -7,6 +7,8 @@
 		"wallColor": 48,
 		"allureColor": 98,
 		"turretColor": 98,
+		"turretWindowColor": 101,
+		"turretRoofColor": 48,
 		"wallThickness": 3,
 		"allure": true
 		},
