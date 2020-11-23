@@ -1,0 +1,24 @@
+{
+	"config": {
+		"minWallHeight": 4,
+		"maxWallHeight": 8,
+		"initialHeading": 180,
+		"penDown": true,
+		"wallColor": 48,
+		"allureColor": 98,
+		"turretColor": 98,
+		"turretWindowColor": 101,
+		"turretRoofColor": 48,
+		"gateColor": 113,
+		"gateWallColor": 98,
+		"gateFloorColor": 4,
+		"wallThickness": 3,
+		"allure": true
+		},
+	"path": [
+		{"cmd": "pen", "argv": "down"},
+		{"cmd": "move", "argv": 8},
+		{"cmd": "gate", "argv": 11},
+		{"cmd": "move", "argv": 8}
+	]
+}

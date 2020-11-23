@@ -18,6 +18,9 @@ allureColor = config['allureColor']
 turretColor = config['turretColor']
 turretRoofColor = config['turretRoofColor']
 turretWindowColor = config['turretWindowColor']
+gateColor = config['gateColor']
+gateWallColor = config['gateWallColor']
+gateFloorColor = config['gateFloorColor']
 allure = config['allure']
 penDown = config['penDown']
 heading = config['initialHeading']
@@ -30,6 +33,7 @@ allureQueue = deque([])
 debugQueue = deque([])
 turretQueue = deque([])
 turretRoofQueue = deque([])
+gateQueue = deque([])
 
 # mcpi setup and initialization
 mc = Minecraft.create()
@@ -41,14 +45,15 @@ wallY = mc.getHeight(pos.x, pos.z) + (maxWallHeight + minWallHeight) / 2
 def processSetBlocksQueue(queue):
     for i in range(len(queue)):
         tuple = queue.popleft()
-        mc.setBlocks(tuple[0], tuple[1], tuple[2], tuple[3], tuple[4], tuple[5], tuple[6])
+        if (len(tuple) >= 7):
+            mc.setBlocks(tuple[0], tuple[1], tuple[2], tuple[3], tuple[4], tuple[5], tuple[6])
     
 
 print('processing path (', len(data['path']), 'steps )')
 for i in range(len(data['path'])):
     step = data['path'][i]
     argv = step['argv']
-    print('step', i+1, 'of', len(data['path']),', cmd:', step['cmd'], ', argv:', argv)
+    print('step', i+1, 'of', len(data['path']),', cmd:', step['cmd'], ', argv:', argv,', heading:', heading)
     
     ### pen
     if (step['cmd'] == 'pen'):
@@ -255,6 +260,41 @@ for i in range(len(data['path'])):
         #turret roof (top spire)
         turretRoofQueue.append((pos.x-(wallThickness//2-1), wallY+turretHeight+10, pos.z, pos.x+(wallThickness//2-1), wallY+turretHeight+15, pos.z, turretRoofColor))
 
+    elif (step['cmd'] == 'gate'):
+        if (heading == 0 or heading == 180): # north or south
+            if (heading == 180): # heading south, increment position first
+                pos.z += argv
+            # clear the entryway of debris
+            gateQueue.append((pos.x-(wallThickness//2), wallY-3, pos.z-(wallThickness//2+1), pos.x+(wallThickness//2), mc.getHeight(pos.x+(wallThickness//2), pos.z-argv+(wallThickness//2*2)), pos.z-argv+(wallThickness//2*2), block.AIR)) 
+            
+            # 4 posts
+            gateQueue.append((pos.x-1, mc.getHeight(pos.x-1, pos.z-(wallThickness//2+1)), pos.z-(wallThickness//2+1), pos.x-2, wallY-1, pos.z-(wallThickness//2+1), gateWallColor))
+            gateQueue.append((pos.x+1, mc.getHeight(pos.x-1, pos.z-(wallThickness//2+1)), pos.z-(wallThickness//2+1), pos.x+2, wallY-1, pos.z-(wallThickness//2+1), gateWallColor))
+            gateQueue.append((pos.x-1, mc.getHeight(pos.x-1, pos.z-argv+(wallThickness//2*2)), pos.z-argv+(wallThickness//2*2), pos.x-2, wallY-1, pos.z-argv+(wallThickness//2*2), gateWallColor))
+            gateQueue.append((pos.x+1, mc.getHeight(pos.x-1, pos.z-argv+(wallThickness//2*2)), pos.z-argv+(wallThickness//2*2), pos.x+2, wallY-1, pos.z-argv+(wallThickness//2*2), gateWallColor))
+            
+            # top plate
+            gateQueue.append((pos.x-2, wallY, pos.z-(wallThickness//2+1), pos.x+2, wallY+2, pos.z-argv+(wallThickness//2*2), gateWallColor))
+            
+            # build the fence post gate
+            gateQueue.append((pos.x, wallY, pos.z-(wallThickness//2+1), pos.x, wallY-2, pos.z-argv+(wallThickness//2*2), gateColor))
+            
+            # front plate
+            gateQueue.append((pos.x-3, wallY+1, pos.z-(wallThickness//2), pos.x-3, wallY+1, pos.z-argv+(wallThickness//2*2-1), gateWallColor))
+            
+            # back plate
+            gateQueue.append((pos.x+3, wallY+1, pos.z-(wallThickness//2), pos.x+3, wallY+1, pos.z-argv+(wallThickness//2*2-1), gateWallColor))
+            
+            # bottom plate
+            gateQueue.append((pos.x-2, mc.getHeight(pos.x, pos.z)-1, pos.z-(wallThickness//2+1), pos.x+2, mc.getHeight(pos.x, pos.z)-1, pos.z-argv+(wallThickness//2*2), gateFloorColor))
+            
+            if (heading == 0): # heading north, increment position after drawing
+                pos.z -= argv
+        elif (heading == 90): # east
+            gateQueue.append(())
+        elif (heading == 270): # west
+            gateQueue.append(())
+        
 
 print('processing wallQueue')
 processSetBlocksQueue(wallQueue)
@@ -268,5 +308,8 @@ processSetBlocksQueue(turretQueue)
 print('processing turretRoofQueue')
 processSetBlocksQueue(turretRoofQueue)
 
-# print('processing debugQueue')
-# processSetBlocksQueue(debugQueue)
+print('processing gateQueue')
+processSetBlocksQueue(gateQueue)
+
+print('processing debugQueue')
+processSetBlocksQueue(debugQueue)
