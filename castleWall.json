@@ -1,13 +1,22 @@
 {
 	"config": {
 		"minWallHeight": 4,
-		"maxWallHeight": 10,
+		"maxWallHeight": 8,
 		"initialHeading": 0,
 		"penDown": true,
-		"wallColor": 48,
-		"allureColor": 98,
 		"wallThickness": 3,
 		"allure": true
+		},
+	"color": {
+		"wallColor": [48],
+		"allureColor": [98],
+		"turretColor": [98],
+		"turretWindowColor": [160, 9],
+		"turretRoofColor": [48],
+		"gateColor": [113],
+		"gateWallColor": [98],
+		"gateFloorColor": [4],
+		"decorativeStairColor": 109
 		},
 	"path": [
 		{"cmd": "pen", "argv": "down"},
@@ -18,11 +27,15 @@
 		{"cmd": "right", "argv": 90},
 		{"cmd": "move", "argv": 10},
 		{"cmd": "left", "argv": 90},
-		{"cmd": "move", "argv": 35},
+		{"cmd": "move", "argv": 15},
+		{"cmd": "gate", "argv": 11},
+		{"cmd": "move", "argv": 15},
 		{"cmd": "right", "argv": 90},
 		{"cmd": "move", "argv": 10},
 		{"cmd": "right", "argv": 90},
-		{"cmd": "move", "argv": 35},
+		{"cmd": "move", "argv": 15},
+		{"cmd": "gate", "argv": 11},
+		{"cmd": "move", "argv": 15},
 		{"cmd": "left", "argv": 90},
 		{"cmd": "move", "argv": 10},
 		{"cmd": "right", "argv": 90},

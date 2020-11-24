@@ -1,14 +1,22 @@
 {
 	"config": {
-		"minWallHeight": 5,
-		"maxWallHeight": 10,
+		"minWallHeight": 4,
+		"maxWallHeight": 8,
 		"initialHeading": 0,
 		"penDown": true,
-		"wallColor": 48,
-		"allureColor": 98,
-		"turretColor": 155,
 		"wallThickness": 3,
 		"allure": true
+		},
+	"color": {
+		"wallColor": [48],
+		"allureColor": [98],
+		"turretColor": [98],
+		"turretWindowColor": [160, 9],
+		"turretRoofColor": [48],
+		"gateColor": [113],
+		"gateWallColor": [98],
+		"gateFloorColor": [4],
+		"decorativeStairColor": 109
 		},
 	"path": [
 		{"cmd": "color", "argv": 48},
