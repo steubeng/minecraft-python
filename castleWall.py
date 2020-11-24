@@ -6,6 +6,7 @@
 # TODO: add something cylindrical
 # TODO: box-top of turret with ladder acesnding to ascend
 # TODO: vary height of gate above the wallY
+# TODO: implement GOTO command to move without building
 
 
 from mcpi.minecraft import Minecraft
@@ -43,15 +44,18 @@ gateColor, gateSubColor = getColorConfig(color['gateColor'])
 gateWallColor, gateWallSubColor = getColorConfig(color['gateWallColor'])
 gateFloorColor, gateFloorSubColor = getColorConfig(color['gateFloorColor'])
 decorativeStairColor = color['decorativeStairColor'] # this will always be a scalar since the "subColor" will be the "direction"
+parapetColor, parapetSubColor = getColorConfig(color['parapetColor'])
 
 # config
 minWallHeight = config['minWallHeight']
 maxWallHeight = config['maxWallHeight']
 wallThickness = config['wallThickness']
 allure = config['allure']
+parapet = config['parapet'] and allure
 penDown = config['penDown']
 heading = config['initialHeading']
 prevHeading = heading
+prevCmd = ""
 lastSetBlocksWallColumnBottom = {}
 lastSetBlocksWallColumnTop = {}
 wallQueue = deque([])
@@ -75,6 +79,10 @@ def processSetBlocksQueue(queue):
             mc.setBlocks(tuple[0], tuple[1], tuple[2], tuple[3], tuple[4], tuple[5], tuple[6], tuple[7])
         elif (len(tuple) >= 7):
             mc.setBlocks(tuple[0], tuple[1], tuple[2], tuple[3], tuple[4], tuple[5], tuple[6])
+        elif (len(tuple) == 5 and tuple[4] != ""):
+            mc.setBlock(tuple[0], tuple[1], tuple[2], tuple[3], tuple[4])
+        elif (len(tuple) >= 4):
+            mc.setBlock(tuple[0], tuple[1], tuple[2], tuple[3])
         else:
             print('something weird happened, len(tuple):', len(tuple))
 
@@ -96,89 +104,194 @@ for i in range(len(data['path'])):
     elif (step['cmd'] == 'move'):
         if (heading == 0): # north
             for z in range(argv):
-                if (penDown):                    
-                    if (z == 0):
-                        wallQueue.append((pos.x-(wallThickness//2), mc.getHeight(pos.x, pos.z), pos.z, pos.x+(wallThickness//2), wallY, pos.z+(wallThickness//2), wallColor, wallSubColor))
-                    elif (z == argv - 1):
-                        wallQueue.append((pos.x-(wallThickness//2), mc.getHeight(pos.x, pos.z), pos.z, pos.x+(wallThickness//2), wallY, pos.z-(wallThickness//2), wallColor, wallSubColor))
-                    else:
-                        wallQueue.append((pos.x-(wallThickness//2), min(wallY, mc.getHeight(pos.x, pos.z)), pos.z, pos.x+(wallThickness//2), wallY, pos.z, wallColor, wallSubColor))
-                if (z < argv - 1):
-                    if (allure):
-                        allureQueue.append((pos.x-(wallThickness//2+1), wallY+1, pos.z-(wallThickness//2+1), pos.x+(wallThickness//2+1), wallY+1, pos.z+(wallThickness//2+1), allureColor, allureSubColor))
+                if (allure):
+                    allureQueue.append((pos.x-(wallThickness//2+1), wallY+1, pos.z-(wallThickness//2+1), pos.x+(wallThickness//2+1), wallY+1, pos.z+(wallThickness//2+1), allureColor, allureSubColor))
+                if (z == 0): # first one
+                    wallQueue.append((pos.x-(wallThickness//2), mc.getHeight(pos.x, pos.z), pos.z, pos.x+(wallThickness//2), wallY, pos.z+(wallThickness//2), wallColor, wallSubColor))
+                    if (parapet):
+                        allureQueue.append((pos.x-(wallThickness//2+1), wallY+2, pos.z, parapetColor, parapetSubColor))
+                        allureQueue.append((pos.x+(wallThickness//2+1), wallY+2, pos.z, parapetColor, parapetSubColor))
+                        allureQueue.append((pos.x-(wallThickness//2+1), wallY+2, pos.z+2, parapetColor, parapetSubColor))
+                        allureQueue.append((pos.x+(wallThickness//2+1), wallY+2, pos.z+2, parapetColor, parapetSubColor))
+                        allureQueue.append((pos.x-(wallThickness//2+1), wallY+3, pos.z, block.TORCH))
+                        allureQueue.append((pos.x+(wallThickness//2+1), wallY+3, pos.z, block.TORCH))
+                        allureQueue.append((pos.x-(wallThickness//2+1), wallY+3, pos.z+2, block.TORCH))
+                        allureQueue.append((pos.x+(wallThickness//2+1), wallY+3, pos.z+2, block.TORCH))
                     pos.z -= 1
-                if (z == argv - 1):
-                    if (allure):
-                        allureQueue.append((pos.x-(wallThickness//2+1), wallY+1, pos.z-(wallThickness//2+1), pos.x+(wallThickness//2+1), wallY+1, pos.z+(wallThickness//2+1), allureColor, allureSubColor))
+                elif (z == argv - 1): # last one
+                    wallQueue.append((pos.x-(wallThickness//2), mc.getHeight(pos.x, pos.z), pos.z, pos.x+(wallThickness//2), wallY, pos.z-(wallThickness//2), wallColor, wallSubColor))
+                    if (parapet and z % 2 == 0):
+                        allureQueue.append((pos.x-(wallThickness//2+1), wallY+2, pos.z, parapetColor, parapetSubColor))
+                        allureQueue.append((pos.x+(wallThickness//2+1), wallY+2, pos.z, parapetColor, parapetSubColor))
+                        allureQueue.append((pos.x-(wallThickness//2+1), wallY+2, pos.z-2, parapetColor, parapetSubColor))
+                        allureQueue.append((pos.x+(wallThickness//2+1), wallY+2, pos.z-2, parapetColor, parapetSubColor))
+                        allureQueue.append((pos.x-(wallThickness//2+1), wallY+3, pos.z, block.TORCH))
+                        allureQueue.append((pos.x+(wallThickness//2+1), wallY+3, pos.z, block.TORCH))
+                        allureQueue.append((pos.x-(wallThickness//2+1), wallY+3, pos.z-2, block.TORCH))
+                        allureQueue.append((pos.x+(wallThickness//2+1), wallY+3, pos.z-2, block.TORCH))
+                else: # everything else
+                    wallQueue.append((pos.x-(wallThickness//2), min(wallY, mc.getHeight(pos.x, pos.z)), pos.z, pos.x+(wallThickness//2), wallY, pos.z, wallColor, wallSubColor))
+                    if (parapet and z % 2 == 0):
+                        allureQueue.append((pos.x-(wallThickness//2+1), wallY+2, pos.z, parapetColor, parapetSubColor))
+                        allureQueue.append((pos.x+(wallThickness//2+1), wallY+2, pos.z, parapetColor, parapetSubColor))
+                        allureQueue.append((pos.x-(wallThickness//2+1), wallY+3, pos.z, block.TORCH))
+                        allureQueue.append((pos.x+(wallThickness//2+1), wallY+3, pos.z, block.TORCH))
+                    pos.z -= 1                        
                 if ((z < argv - (wallThickness//2)) and (z > (wallThickness//2))):
                     if (wallY - mc.getHeight(pos.x, pos.z) < minWallHeight):
                         wallY += 1
                     elif (wallY - mc.getHeight(pos.x, pos.z) > maxWallHeight):
                         wallY -= 1
+                        
         elif (heading == 90): # east
             for x in range(argv):
-                if (penDown):
-                    if (x == 0):
-                        wallQueue.append((pos.x, mc.getHeight(pos.x, pos.z), pos.z-(wallThickness//2), pos.x-(wallThickness//2), wallY, pos.z+(wallThickness//2), wallColor, wallSubColor))
-                    elif (x == argv - 1):
-                        wallQueue.append((pos.x, mc.getHeight(pos.x, pos.z), pos.z-(wallThickness//2), pos.x+(wallThickness//2), wallY, pos.z+(wallThickness//2), wallColor, wallSubColor))
-                    else:
-                        wallQueue.append((pos.x, min(wallY, mc.getHeight(pos.x, pos.z)), pos.z-(wallThickness//2), pos.x, wallY, pos.z+(wallThickness//2), wallColor, wallSubColor))
-                if (x < argv - 1):
-                    if (allure):
-                        allureQueue.append((pos.x-(wallThickness//2+1), wallY+1, pos.z-(wallThickness//2+1), pos.x+(wallThickness//2+1), wallY+1, pos.z+(wallThickness//2+1), allureColor, allureSubColor))
+                if (allure):
+                    allureQueue.append((pos.x-(wallThickness//2+1), wallY+1, pos.z-(wallThickness//2+1), pos.x+(wallThickness//2+1), wallY+1, pos.z+(wallThickness//2+1), allureColor, allureSubColor))
+                if (x == 0): # first one
+                    wallQueue.append((pos.x, mc.getHeight(pos.x, pos.z), pos.z-(wallThickness//2), pos.x-(wallThickness//2), wallY, pos.z+(wallThickness//2), wallColor, wallSubColor))
+                    if (parapet):
+                        allureQueue.append((pos.x, wallY+2, pos.z-(wallThickness//2+1), parapetColor, parapetSubColor))
+                        allureQueue.append((pos.x, wallY+2, pos.z+(wallThickness//2+1), parapetColor, parapetSubColor))
+                        allureQueue.append((pos.x-2, wallY+2, pos.z-(wallThickness//2+1), parapetColor, parapetSubColor))
+                        allureQueue.append((pos.x-2, wallY+2, pos.z+(wallThickness//2+1), parapetColor, parapetSubColor))
+                        allureQueue.append((pos.x, wallY+3, pos.z-(wallThickness//2+1), block.TORCH))
+                        allureQueue.append((pos.x, wallY+3, pos.z+(wallThickness//2+1), block.TORCH))
+                        allureQueue.append((pos.x-2, wallY+3, pos.z-(wallThickness//2+1), block.TORCH))
+                        allureQueue.append((pos.x-2, wallY+3, pos.z+(wallThickness//2+1), block.TORCH))
                     pos.x += 1
-                elif (x == argv - 1):
-                    if (allure):
-                        allureQueue.append((pos.x-(wallThickness//2+1), wallY+1, pos.z-(wallThickness//2+1), pos.x+(wallThickness//2+1), wallY+1, pos.z+(wallThickness//2+1), allureColor, allureSubColor))
+                elif (x == argv - 1): # last one
+                    wallQueue.append((pos.x, mc.getHeight(pos.x, pos.z), pos.z-(wallThickness//2), pos.x+(wallThickness//2), wallY, pos.z+(wallThickness//2), wallColor, wallSubColor))
+                    if (parapet and x % 2 == 0):
+                        allureQueue.append((pos.x, wallY+2, pos.z-(wallThickness//2+1), parapetColor, parapetSubColor))
+                        allureQueue.append((pos.x, wallY+2, pos.z+(wallThickness//2+1), parapetColor, parapetSubColor))
+                        allureQueue.append((pos.x+2, wallY+2, pos.z-(wallThickness//2+1), parapetColor, parapetSubColor))
+                        allureQueue.append((pos.x+2, wallY+2, pos.z+(wallThickness//2+1), parapetColor, parapetSubColor))
+                        allureQueue.append((pos.x, wallY+3, pos.z-(wallThickness//2+1), block.TORCH))
+                        allureQueue.append((pos.x, wallY+3, pos.z+(wallThickness//2+1), block.TORCH))
+                        allureQueue.append((pos.x+2, wallY+3, pos.z-(wallThickness//2+1), block.TORCH))
+                        allureQueue.append((pos.x+2, wallY+3, pos.z+(wallThickness//2+1), block.TORCH))
+                else: # everything else
+                    wallQueue.append((pos.x, min(wallY, mc.getHeight(pos.x, pos.z)), pos.z-(wallThickness//2), pos.x, wallY, pos.z+(wallThickness//2), wallColor, wallSubColor))
+                    if (parapet and x % 2 == 0):
+                        allureQueue.append((pos.x, wallY+2, pos.z-(wallThickness//2+1), parapetColor, parapetSubColor))
+                        allureQueue.append((pos.x, wallY+2, pos.z+(wallThickness//2+1), parapetColor, parapetSubColor))
+                        allureQueue.append((pos.x, wallY+3, pos.z-(wallThickness//2+1), block.TORCH))
+                        allureQueue.append((pos.x, wallY+3, pos.z+(wallThickness//2+1), block.TORCH))
+                    pos.x += 1
                 if ((x < argv - (wallThickness//2)) and (x > (wallThickness//2))):
                     if (wallY - mc.getHeight(pos.x, pos.z) < minWallHeight):
                         wallY += 1
                     elif (wallY - mc.getHeight(pos.x, pos.z) > maxWallHeight):
                         wallY -= 1
-                # print('pos.x went from', pos.x-1, 'to', pos.x)
+
         elif (heading == 180): # south
             for z in range(argv):
-                if (penDown):
-                    if (z == 0):
-                        wallQueue.append((pos.x-(wallThickness//2), mc.getHeight(pos.x, pos.z), pos.z, pos.x+(wallThickness//2), wallY, pos.z-(wallThickness//2), wallColor, wallSubColor))
-                    elif (z == argv - 1):
-                        wallQueue.append((pos.x-(wallThickness//2), mc.getHeight(pos.x, pos.z), pos.z, pos.x+(wallThickness//2), wallY, pos.z+(wallThickness//2), wallColor, wallSubColor))
-                    else:
-                        wallQueue.append((pos.x-(wallThickness//2), min(wallY, mc.getHeight(pos.x, pos.z)), pos.z, pos.x+(wallThickness//2), wallY, pos.z, wallColor, wallSubColor))
-                if (z < argv - 1):
-                    if (allure):
-                        allureQueue.append((pos.x-(wallThickness//2+1), wallY+1, pos.z-(wallThickness//2+1), pos.x+(wallThickness//2+1), wallY+1, pos.z+(wallThickness//2+1), allureColor, allureSubColor))
+                if (allure):
+                    allureQueue.append((pos.x-(wallThickness//2+1), wallY+1, pos.z-(wallThickness//2+1), pos.x+(wallThickness//2+1), wallY+1, pos.z+(wallThickness//2+1), allureColor, allureSubColor))
+                if (z == 0): # first one
+                    wallQueue.append((pos.x-(wallThickness//2), mc.getHeight(pos.x, pos.z), pos.z, pos.x+(wallThickness//2), wallY, pos.z-(wallThickness//2), wallColor, wallSubColor))
+                    if (parapet):
+                        allureQueue.append((pos.x-(wallThickness//2+1), wallY+2, pos.z, parapetColor, parapetSubColor))
+                        allureQueue.append((pos.x+(wallThickness//2+1), wallY+2, pos.z, parapetColor, parapetSubColor))
+                        allureQueue.append((pos.x-(wallThickness//2+1), wallY+2, pos.z-2, parapetColor, parapetSubColor))
+                        allureQueue.append((pos.x+(wallThickness//2+1), wallY+2, pos.z-2, parapetColor, parapetSubColor))
+                        allureQueue.append((pos.x-(wallThickness//2+1), wallY+3, pos.z, block.TORCH))
+                        allureQueue.append((pos.x+(wallThickness//2+1), wallY+3, pos.z, block.TORCH))
+                        allureQueue.append((pos.x-(wallThickness//2+1), wallY+3, pos.z-2, block.TORCH))
+                        allureQueue.append((pos.x+(wallThickness//2+1), wallY+3, pos.z-2, block.TORCH))
                     pos.z += 1
-                if (z == argv - 1):
-                    if (allure):
-                        allureQueue.append((pos.x-(wallThickness//2+1), wallY+1, pos.z-(wallThickness//2+1), pos.x+(wallThickness//2+1), wallY+1, pos.z+(wallThickness//2+1), allureColor, allureSubColor))
+                elif (z == argv - 1): # last one
+                    wallQueue.append((pos.x-(wallThickness//2), mc.getHeight(pos.x, pos.z), pos.z, pos.x+(wallThickness//2), wallY, pos.z+(wallThickness//2), wallColor, wallSubColor))
+                    if (parapet and z % 2 == 0):
+                        allureQueue.append((pos.x-(wallThickness//2+1), wallY+2, pos.z, parapetColor, parapetSubColor))
+                        allureQueue.append((pos.x+(wallThickness//2+1), wallY+2, pos.z, parapetColor, parapetSubColor))
+                        allureQueue.append((pos.x-(wallThickness//2+1), wallY+2, pos.z+2, parapetColor, parapetSubColor))
+                        allureQueue.append((pos.x+(wallThickness//2+1), wallY+2, pos.z+2, parapetColor, parapetSubColor))
+                        allureQueue.append((pos.x-(wallThickness//2+1), wallY+3, pos.z, block.TORCH))
+                        allureQueue.append((pos.x+(wallThickness//2+1), wallY+3, pos.z, block.TORCH))
+                        allureQueue.append((pos.x-(wallThickness//2+1), wallY+3, pos.z+2, block.TORCH))
+                        allureQueue.append((pos.x+(wallThickness//2+1), wallY+3, pos.z+2, block.TORCH))
+                else: # everything else
+                    wallQueue.append((pos.x-(wallThickness//2), min(wallY, mc.getHeight(pos.x, pos.z)), pos.z, pos.x+(wallThickness//2), wallY, pos.z, wallColor, wallSubColor))
+                    if (parapet and z % 2 == 0):
+                        allureQueue.append((pos.x-(wallThickness//2+1), wallY+2, pos.z, parapetColor, parapetSubColor))
+                        allureQueue.append((pos.x+(wallThickness//2+1), wallY+2, pos.z, parapetColor, parapetSubColor))
+                        allureQueue.append((pos.x-(wallThickness//2+1), wallY+3, pos.z, block.TORCH))
+                        allureQueue.append((pos.x+(wallThickness//2+1), wallY+3, pos.z, block.TORCH))
+                    pos.z += 1                        
                 if ((z < argv - (wallThickness//2)) and (z > (wallThickness//2))):
                     if (wallY - mc.getHeight(pos.x, pos.z) < minWallHeight):
                         wallY += 1
                     elif (wallY - mc.getHeight(pos.x, pos.z) > maxWallHeight):
                         wallY -= 1
+
         elif (heading == 270): # west
             for x in range(argv):
-                if (penDown):                    
-                    if (x == 0):
-                        wallQueue.append((pos.x, mc.getHeight(pos.x, pos.z), pos.z-(wallThickness//2), pos.x+(wallThickness//2), wallY, pos.z+(wallThickness//2), wallColor, wallSubColor))
-                    elif (x == argv - 1):
-                        wallQueue.append((pos.x, mc.getHeight(pos.x, pos.z), pos.z-(wallThickness//2), pos.x-(wallThickness//2), wallY, pos.z+(wallThickness//2), wallColor, wallSubColor))
-                    else:
-                        wallQueue.append((pos.x, min(wallY, mc.getHeight(pos.x, pos.z)), pos.z-(wallThickness//2), pos.x, wallY, pos.z+(wallThickness//2), wallColor, wallSubColor))
-                if (x < argv - 1):
-                    if (allure):
-                        allureQueue.append((pos.x-(wallThickness//2+1), wallY+1, pos.z-(wallThickness//2+1), pos.x+(wallThickness//2+1), wallY+1, pos.z+(wallThickness//2+1), allureColor, allureSubColor))
+                if (allure):
+                    allureQueue.append((pos.x-(wallThickness//2+1), wallY+1, pos.z-(wallThickness//2+1), pos.x+(wallThickness//2+1), wallY+1, pos.z+(wallThickness//2+1), allureColor, allureSubColor))
+                if (x == 0): # first one
+                    wallQueue.append((pos.x, mc.getHeight(pos.x, pos.z), pos.z-(wallThickness//2), pos.x+(wallThickness//2), wallY, pos.z+(wallThickness//2), wallColor, wallSubColor))
+                    if (parapet):
+                        allureQueue.append((pos.x, wallY+2, pos.z-(wallThickness//2+1), parapetColor, parapetSubColor))
+                        allureQueue.append((pos.x, wallY+2, pos.z+(wallThickness//2+1), parapetColor, parapetSubColor))
+                        allureQueue.append((pos.x+2, wallY+2, pos.z-(wallThickness//2+1), parapetColor, parapetSubColor))
+                        allureQueue.append((pos.x+2, wallY+2, pos.z+(wallThickness//2+1), parapetColor, parapetSubColor))
+                        allureQueue.append((pos.x, wallY+3, pos.z-(wallThickness//2+1), block.TORCH))
+                        allureQueue.append((pos.x, wallY+3, pos.z+(wallThickness//2+1), block.TORCH))
+                        allureQueue.append((pos.x+2, wallY+3, pos.z-(wallThickness//2+1), block.TORCH))
+                        allureQueue.append((pos.x+2, wallY+3, pos.z+(wallThickness//2+1), block.TORCH))
                     pos.x -= 1
-                if (x == argv - 1):
-                    if (allure):
-                        allureQueue.append((pos.x-(wallThickness//2+1), wallY+1, pos.z-(wallThickness//2+1), pos.x+(wallThickness//2+1), wallY+1, pos.z+(wallThickness//2+1), allureColor, allureSubColor))
+                elif (x == argv - 1): # last one
+                    wallQueue.append((pos.x, mc.getHeight(pos.x, pos.z), pos.z-(wallThickness//2), pos.x-(wallThickness//2), wallY, pos.z+(wallThickness//2), wallColor, wallSubColor))
+                    if (parapet and x % 2 == 0):
+                        allureQueue.append((pos.x, wallY+2, pos.z-(wallThickness//2+1), parapetColor, parapetSubColor))
+                        allureQueue.append((pos.x, wallY+2, pos.z+(wallThickness//2+1), parapetColor, parapetSubColor))
+                        allureQueue.append((pos.x-2, wallY+2, pos.z-(wallThickness//2+1), parapetColor, parapetSubColor))
+                        allureQueue.append((pos.x-2, wallY+2, pos.z+(wallThickness//2+1), parapetColor, parapetSubColor))
+                        allureQueue.append((pos.x, wallY+3, pos.z-(wallThickness//2+1), block.TORCH))
+                        allureQueue.append((pos.x, wallY+3, pos.z+(wallThickness//2+1), block.TORCH))
+                        allureQueue.append((pos.x-2, wallY+3, pos.z-(wallThickness//2+1), block.TORCH))
+                        allureQueue.append((pos.x-2, wallY+3, pos.z+(wallThickness//2+1), block.TORCH))
+                else: # everything else
+                    wallQueue.append((pos.x, min(wallY, mc.getHeight(pos.x, pos.z)), pos.z-(wallThickness//2), pos.x, wallY, pos.z+(wallThickness//2), wallColor, wallSubColor))
+                    if (parapet and x % 2 == 0):
+                        allureQueue.append((pos.x, wallY+2, pos.z-(wallThickness//2+1), parapetColor, parapetSubColor))
+                        allureQueue.append((pos.x, wallY+2, pos.z+(wallThickness//2+1), parapetColor, parapetSubColor))
+                        allureQueue.append((pos.x, wallY+3, pos.z-(wallThickness//2+1), block.TORCH))
+                        allureQueue.append((pos.x, wallY+3, pos.z+(wallThickness//2+1), block.TORCH))
+                    pos.x -= 1
                 if ((x < argv - (wallThickness//2)) and (x > (wallThickness//2))):
                     if (wallY - mc.getHeight(pos.x, pos.z) < minWallHeight):
                         wallY += 1
                     elif (wallY - mc.getHeight(pos.x, pos.z) > maxWallHeight):
                         wallY -= 1
+            
+            
+            
+            
+            
+            
+            
+            
+#                if (penDown):                    
+#                    if (x == 0):
+#                        wallQueue.append((pos.x, mc.getHeight(pos.x, pos.z), pos.z-(wallThickness//2), pos.x+(wallThickness//2), wallY, pos.z+(wallThickness//2), wallColor, wallSubColor))
+#                    elif (x == argv - 1):
+#                        wallQueue.append((pos.x, mc.getHeight(pos.x, pos.z), pos.z-(wallThickness//2), pos.x-(wallThickness//2), wallY, pos.z+(wallThickness//2), wallColor, wallSubColor))
+#                    else:
+#                        wallQueue.append((pos.x, min(wallY, mc.getHeight(pos.x, pos.z)), pos.z-(wallThickness//2), pos.x, wallY, pos.z+(wallThickness//2), wallColor, wallSubColor))
+#                if (x < argv - 1):
+#                    if (allure):
+#                        allureQueue.append((pos.x-(wallThickness//2+1), wallY+1, pos.z-(wallThickness//2+1), pos.x+(wallThickness//2+1), wallY+1, pos.z+(wallThickness//2+1), allureColor, allureSubColor))
+#                    pos.x -= 1
+#                if (x == argv - 1):
+#                    if (allure):
+#                        allureQueue.append((pos.x-(wallThickness//2+1), wallY+1, pos.z-(wallThickness//2+1), pos.x+(wallThickness//2+1), wallY+1, pos.z+(wallThickness//2+1), allureColor, allureSubColor))
+#                if ((x < argv - (wallThickness//2)) and (x > (wallThickness//2))):
+#                    if (wallY - mc.getHeight(pos.x, pos.z) < minWallHeight):
+#                        wallY += 1
+#                    elif (wallY - mc.getHeight(pos.x, pos.z) > maxWallHeight):
+#                        wallY -= 1
 
     ### turn left
     elif (step['cmd'] == 'left'):
@@ -263,16 +376,16 @@ for i in range(len(data['path'])):
             gateQueue.append((pos.x+1, mc.getHeight(pos.x-1, pos.z-argv+(wallThickness//2*2)), pos.z-argv+(wallThickness//2*2), pos.x+2, wallY-1, pos.z-argv+(wallThickness//2*2), gateWallColor, gateWallSubColor))
             
             # top plate
-            gateQueue.append((pos.x-2, wallY, pos.z-(wallThickness//2+1), pos.x+2, wallY+2, pos.z-argv+(wallThickness//2*2), gateWallColor, gateWallSubColor))
+            gateQueue.append((pos.x-2, wallY, pos.z-(wallThickness//2+1), pos.x+2, wallY+3, pos.z-argv+(wallThickness//2*2), gateWallColor, gateWallSubColor))
             
             # bottom plate
             gateQueue.append((pos.x-2, mc.getHeight(pos.x, pos.z)-1, pos.z-(wallThickness//2+1), pos.x+2, mc.getHeight(pos.x, pos.z)-1, pos.z-argv+(wallThickness//2*2), gateFloorColor, gateFloorSubColor))
             
             # front plate
-            gateQueue.append((pos.x-3, wallY+1, pos.z-(wallThickness//2), pos.x-3, wallY+1, pos.z-argv+(wallThickness//2*2-1), gateWallColor, gateWallSubColor))
+            gateQueue.append((pos.x-3, wallY+1, pos.z-(wallThickness//2), pos.x-3, wallY+2, pos.z-argv+(wallThickness//2*2-1), gateWallColor, gateWallSubColor))
             
             # back plate
-            gateQueue.append((pos.x+3, wallY+1, pos.z-(wallThickness//2), pos.x+3, wallY+1, pos.z-argv+(wallThickness//2*2-1), gateWallColor, gateWallSubColor))
+            gateQueue.append((pos.x+3, wallY+1, pos.z-(wallThickness//2), pos.x+3, wallY+2, pos.z-argv+(wallThickness//2*2-1), gateWallColor, gateWallSubColor))
             
             # decoratoive upsidedown stair blocks
             gateQueue.append((pos.x-2, wallY-1, pos.z-(wallThickness//2+2), pos.x+2, wallY-1, pos.z-(wallThickness//2+2), decorativeStairColor, 6))
@@ -296,16 +409,16 @@ for i in range(len(data['path'])):
             gateQueue.append((pos.x-argv+(wallThickness//2*2), mc.getHeight(pos.x-argv+(wallThickness//2*2), pos.z-1), pos.z+1, pos.x-argv+(wallThickness//2*2), wallY-1, pos.z+2, gateWallColor, gateWallSubColor))
             
             # top plate
-            gateQueue.append((pos.x-(wallThickness//2+1), wallY, pos.z-2, pos.x-argv+(wallThickness//2*2), wallY+2, pos.z+2, gateWallColor, gateWallSubColor))
+            gateQueue.append((pos.x-(wallThickness//2+1), wallY, pos.z-2, pos.x-argv+(wallThickness//2*2), wallY+3, pos.z+2, gateWallColor, gateWallSubColor))
             
             # bottom plate
             gateQueue.append((pos.x-(wallThickness//2+1), mc.getHeight(pos.x, pos.z)-1, pos.z-2, pos.x-argv+(wallThickness//2*2), mc.getHeight(pos.x, pos.z)-1, pos.z+2, gateFloorColor, gateFloorSubColor))
             
             # front plate
-            gateQueue.append((pos.x-(wallThickness//2), wallY+1, pos.z-3, pos.x-argv+(wallThickness//2*2-1), wallY+1, pos.z-3, gateWallColor, gateWallSubColor))
+            gateQueue.append((pos.x-(wallThickness//2), wallY+1, pos.z-3, pos.x-argv+(wallThickness//2*2-1), wallY+2, pos.z-3, gateWallColor, gateWallSubColor))
             
             # back plate
-            gateQueue.append((pos.x-(wallThickness//2), wallY+1, pos.z+3, pos.x-argv+(wallThickness//2*2-1), wallY+1, pos.z+3, gateWallColor, gateWallSubColor))
+            gateQueue.append((pos.x-(wallThickness//2), wallY+1, pos.z+3, pos.x-argv+(wallThickness//2*2-1), wallY+2, pos.z+3, gateWallColor, gateWallSubColor))
             
             # decoratoive upsidedown stair blocks
             gateQueue.append((pos.x-(wallThickness//2+2), wallY-1, pos.z-2, pos.x-(wallThickness//2+2), wallY-1, pos.z+2, decorativeStairColor, 4))
@@ -316,7 +429,9 @@ for i in range(len(data['path'])):
             
             if (heading == 270): # heading west, increment position after drawing
                 pos.x-= argv
-        
+                
+    prevCmd = step['cmd']    
+
 
 print('processing wallQueue')
 processSetBlocksQueue(wallQueue)
