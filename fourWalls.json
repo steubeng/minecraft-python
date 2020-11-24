@@ -20,18 +20,19 @@
 		},
 	"path": [
 		{"cmd": "pen", "argv": "down"},
-		{"cmd": "move", "argv": 6},
-		{"cmd": "right", "argv": 90},
-		{"cmd": "turret", "argv": ""},
 		{"cmd": "move", "argv": 30},
 		{"cmd": "right", "argv": 90},
-		{"cmd": "turret", "argv": ""},
-		{"cmd": "move", "argv": 21},
+		{"cmd": "turret", "argv": 4},
+		{"cmd": "move", "argv": 10},
+		{"cmd": "gate", "argv": 10},
+		{"cmd": "move", "argv": 10},
 		{"cmd": "right", "argv": 90},
-		{"cmd": "turret", "argv": ""},
+		{"cmd": "turret", "argv": 6},
 		{"cmd": "move", "argv": 30},
 		{"cmd": "right", "argv": 90},
-		{"cmd": "turret", "argv": ""},
-		{"cmd": "move", "argv": 6}
+		{"cmd": "turret", "argv": 8},
+		{"cmd": "move", "argv": 30},
+		{"cmd": "right", "argv": 90},
+		{"cmd": "turret", "argv": 10}
 	]
 }

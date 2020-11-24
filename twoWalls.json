@@ -23,7 +23,7 @@
 		{"cmd": "pen", "argv": "down"},
 		{"cmd": "move", "argv": 10},
 		{"cmd": "right", "argv": 90},
-		{"cmd": "turret", "argv": ""},
+		{"cmd": "turret", "argv": 4},
 		{"cmd": "move", "argv": 10}
 	]
 }

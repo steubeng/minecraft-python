@@ -1,4 +1,11 @@
 # createWall.py
+
+# TODO: 4 blocks in turret loop can be simplified with clever loop
+# TODO: make torches
+# TODO: upsidedown stair blocks in turret doors
+# TODO: add parapet blocks
+
+
 from mcpi.minecraft import Minecraft
 from mcpi.vec3 import Vec3
 from mcpi import block
@@ -42,7 +49,6 @@ wallThickness = config['wallThickness']
 allure = config['allure']
 penDown = config['penDown']
 heading = config['initialHeading']
-turretHeight = 6
 prevHeading = heading
 lastSetBlocksWallColumnBottom = {}
 lastSetBlocksWallColumnTop = {}
@@ -190,6 +196,7 @@ for i in range(len(data['path'])):
         color = argv
         
     elif (step['cmd'] == 'turret'):
+        turretHeight = argv
         # clear the ground
         turretQueue.append((pos.x-(wallThickness//2+1), wallY+2, pos.z-(wallThickness//2+1), pos.x+(wallThickness//2+1), wallY+2, pos.z+(wallThickness//2+1), block.AIR))
     
@@ -239,7 +246,6 @@ for i in range(len(data['path'])):
         elif (heading == 270): # west
             turretQueue.append((pos.x-(wallThickness//2+2), wallY+2, pos.z-1, pos.x-(wallThickness//2+2), wallY+4, pos.z+1, block.AIR))
             
-        # TODO: These next 4 blocks can be simplified with clever loop
         # turret roof (north)
         turretRoofQueue.append((pos.x-(wallThickness//2+3), wallY+turretHeight+2, pos.z-(wallThickness//2+3), pos.x+(wallThickness//2+3), wallY+turretHeight+2, pos.z-(wallThickness//2+3), turretRoofColor, turretRoofSubColor))
         turretRoofQueue.append((pos.x-(wallThickness//2+3), wallY+turretHeight+3, pos.z-(wallThickness//2+3), pos.x+(wallThickness//2+3), wallY+turretHeight+3, pos.z-(wallThickness//2+3), turretRoofColor, turretRoofSubColor))
