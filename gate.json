@@ -2,7 +2,7 @@
 	"config": {
 		"minWallHeight": 4,
 		"maxWallHeight": 8,
-		"initialHeading": 0,
+		"initialHeading": 270,
 		"penDown": true,
 		"wallThickness": 3,
 		"allure": true

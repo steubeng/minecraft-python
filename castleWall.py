@@ -317,10 +317,39 @@ for i in range(len(data['path'])):
             
             if (heading == 0): # heading north, increment position after drawing
                 pos.z -= argv
-        elif (heading == 90): # east
-            gateQueue.append(())
-        elif (heading == 270): # west
-            gateQueue.append(())
+        elif (heading == 90 or heading == 270): # east or west
+            if (heading == 90): # heading south, increment position first
+                pos.x += argv
+            # clear the entryway of debris
+            gateQueue.append((pos.x-(wallThickness//2+1), wallY-3, pos.z-(wallThickness//2), pos.x-argv+(wallThickness//2*2), mc.getHeight(pos.x-argv+(wallThickness//2*2), pos.z+(wallThickness//2)), pos.z+(wallThickness//2), block.AIR)) 
+            
+            # 4 posts
+            gateQueue.append((pos.x-(wallThickness//2+1), mc.getHeight(pos.x-(wallThickness//2+1), pos.z-1), pos.z-1, pos.x-(wallThickness//2+1), wallY-1, pos.z-2, gateWallColor, gateWallSubColor))
+            gateQueue.append((pos.x-(wallThickness//2+1), mc.getHeight(pos.x-(wallThickness//2+1), pos.z-1), pos.z+1, pos.x-(wallThickness//2+1), wallY-1, pos.z+2, gateWallColor, gateWallSubColor))
+            gateQueue.append((pos.x-argv+(wallThickness//2*2), mc.getHeight(pos.x-argv+(wallThickness//2*2), pos.z-1), pos.z-1, pos.x-argv+(wallThickness//2*2), wallY-1, pos.z-2, gateWallColor, gateWallSubColor))
+            gateQueue.append((pos.x-argv+(wallThickness//2*2), mc.getHeight(pos.x-argv+(wallThickness//2*2), pos.z-1), pos.z+1, pos.x-argv+(wallThickness//2*2), wallY-1, pos.z+2, gateWallColor, gateWallSubColor))
+            
+            # top plate
+            gateQueue.append((pos.x-(wallThickness//2+1), wallY, pos.z-2, pos.x-argv+(wallThickness//2*2), wallY+2, pos.z+2, gateWallColor, gateWallSubColor))
+            
+            # bottom plate
+            gateQueue.append((pos.x-(wallThickness//2+1), mc.getHeight(pos.x, pos.z)-1, pos.z-2, pos.x-argv+(wallThickness//2*2), mc.getHeight(pos.x, pos.z)-1, pos.z+2, gateFloorColor, gateFloorSubColor))
+            
+            # front plate
+            gateQueue.append((pos.x-(wallThickness//2), wallY+1, pos.z-3, pos.x-argv+(wallThickness//2*2-1), wallY+1, pos.z-3, gateWallColor, gateWallSubColor))
+            
+            # back plate
+            gateQueue.append((pos.x-(wallThickness//2), wallY+1, pos.z+3, pos.x-argv+(wallThickness//2*2-1), wallY+1, pos.z+3, gateWallColor, gateWallSubColor))
+            
+            # decoratoive upsidedown stair blocks
+            gateQueue.append((pos.x-(wallThickness//2+2), wallY-1, pos.z-2, pos.x-(wallThickness//2+2), wallY-1, pos.z+2, decorativeStairColor, 4))
+            gateQueue.append((pos.x-argv+(wallThickness//2*2+1), wallY-1, pos.z-2, pos.x-argv+(wallThickness//2*2+1), wallY-1, pos.z+2, decorativeStairColor, 5))
+            
+            # build the fence post gate
+            gateQueue.append((pos.x-(wallThickness//2+1), wallY, pos.z, pos.x-argv+(wallThickness//2*2), wallY-2, pos.z, gateColor, gateSubColor))
+            
+            if (heading == 270): # heading west, increment position after drawing
+                pos.x-= argv
         
 
 print('processing wallQueue')
