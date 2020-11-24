@@ -27,11 +27,11 @@
 		{"cmd": "gate", "argv": 10},
 		{"cmd": "move", "argv": 10},
 		{"cmd": "right", "argv": 90},
-		{"cmd": "turret", "argv": 6},
+		{"cmd": "turret", "argv": 26},
 		{"cmd": "move", "argv": 30},
 		{"cmd": "right", "argv": 90},
 		{"cmd": "turret", "argv": 8},
-		{"cmd": "move", "argv": 30},
+		{"cmd": "move", "argv": 29},
 		{"cmd": "right", "argv": 90},
 		{"cmd": "turret", "argv": 10}
 	]

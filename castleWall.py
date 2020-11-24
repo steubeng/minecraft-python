@@ -1,9 +1,11 @@
 # createWall.py
 
-# TODO: 4 blocks in turret loop can be simplified with clever loop
 # TODO: make torches
 # TODO: upsidedown stair blocks in turret doors
 # TODO: add parapet blocks
+# TODO: add something cylindrical
+# TODO: box-top of turret with ladder acesnding to ascend
+# TODO: vary height of gate above the wallY
 
 
 from mcpi.minecraft import Minecraft
@@ -200,7 +202,6 @@ for i in range(len(data['path'])):
         # clear the ground
         turretQueue.append((pos.x-(wallThickness//2+1), wallY+2, pos.z-(wallThickness//2+1), pos.x+(wallThickness//2+1), wallY+2, pos.z+(wallThickness//2+1), block.AIR))
     
-    
         # main walls
         turretQueue.append((pos.x-(wallThickness//2+2), wallY+2, pos.z-(wallThickness//2+2), pos.x+(wallThickness//2+2), wallY+2+turretHeight, pos.z-(wallThickness//2+2), turretColor, turretSubColor))
         turretQueue.append((pos.x-(wallThickness//2+2), wallY+2, pos.z+(wallThickness//2+2), pos.x+(wallThickness//2+2), wallY+2+turretHeight, pos.z+(wallThickness//2+2), turretColor, turretSubColor))
@@ -224,7 +225,6 @@ for i in range(len(data['path'])):
         turretQueue.append((pos.x-1, wallY+3, pos.z+(wallThickness//2+2), pos.x+1, wallY+4, pos.z+(wallThickness//2+2), turretWindowColor, turretWindowSubColor))
         turretQueue.append((pos.x+(wallThickness//2+2), wallY+3, pos.z-1, pos.x+(wallThickness//2+2), wallY+4, pos.z+1, turretWindowColor, turretWindowSubColor))
         turretQueue.append((pos.x-(wallThickness//2+2), wallY+3, pos.z-1, pos.x-(wallThickness//2+2), wallY+4, pos.z+1, turretWindowColor, turretWindowSubColor))
-        
 
         # entrance door cutout
         if (prevHeading == 0): # north
@@ -245,50 +245,10 @@ for i in range(len(data['path'])):
             turretQueue.append((pos.x-1, wallY+2, pos.z+(wallThickness//2+2), pos.x+1, wallY+4, pos.z+(wallThickness//2+2), block.AIR))
         elif (heading == 270): # west
             turretQueue.append((pos.x-(wallThickness//2+2), wallY+2, pos.z-1, pos.x-(wallThickness//2+2), wallY+4, pos.z+1, block.AIR))
-            
-        # turret roof (north)
-        turretRoofQueue.append((pos.x-(wallThickness//2+3), wallY+turretHeight+2, pos.z-(wallThickness//2+3), pos.x+(wallThickness//2+3), wallY+turretHeight+2, pos.z-(wallThickness//2+3), turretRoofColor, turretRoofSubColor))
-        turretRoofQueue.append((pos.x-(wallThickness//2+3), wallY+turretHeight+3, pos.z-(wallThickness//2+3), pos.x+(wallThickness//2+3), wallY+turretHeight+3, pos.z-(wallThickness//2+3), turretRoofColor, turretRoofSubColor))
-        turretRoofQueue.append((pos.x-(wallThickness//2+2), wallY+turretHeight+4, pos.z-(wallThickness//2+2), pos.x+(wallThickness//2+2), wallY+turretHeight+4, pos.z-(wallThickness//2+2), turretRoofColor, turretRoofSubColor))
-        turretRoofQueue.append((pos.x-(wallThickness//2+2), wallY+turretHeight+5, pos.z-(wallThickness//2+2), pos.x+(wallThickness//2+2), wallY+turretHeight+5, pos.z-(wallThickness//2+2), turretRoofColor, turretRoofSubColor))
-        turretRoofQueue.append((pos.x-(wallThickness//2+1), wallY+turretHeight+6, pos.z-(wallThickness//2+1), pos.x+(wallThickness//2+1), wallY+turretHeight+6, pos.z-(wallThickness//2+1), turretRoofColor, turretRoofSubColor))
-        turretRoofQueue.append((pos.x-(wallThickness//2+1), wallY+turretHeight+7, pos.z-(wallThickness//2+1), pos.x+(wallThickness//2+1), wallY+turretHeight+7, pos.z-(wallThickness//2+1), turretRoofColor, turretRoofSubColor))
-        turretRoofQueue.append((pos.x-(wallThickness//2+0), wallY+turretHeight+8, pos.z-(wallThickness//2+0), pos.x+(wallThickness//2+0), wallY+turretHeight+8, pos.z-(wallThickness//2+0), turretRoofColor, turretRoofSubColor))
-        turretRoofQueue.append((pos.x-(wallThickness//2+0), wallY+turretHeight+9, pos.z-(wallThickness//2+0), pos.x+(wallThickness//2+0), wallY+turretHeight+9, pos.z-(wallThickness//2+0), turretRoofColor, turretRoofSubColor))
         
-        # turret roof (east)
-        turretRoofQueue.append((pos.x+(wallThickness//2+3), wallY+turretHeight+2, pos.z-(wallThickness//2+3), pos.x+(wallThickness//2+3), wallY+turretHeight+2, pos.z+(wallThickness//2+3), turretRoofColor, turretRoofSubColor))
-        turretRoofQueue.append((pos.x+(wallThickness//2+3), wallY+turretHeight+3, pos.z-(wallThickness//2+3), pos.x+(wallThickness//2+3), wallY+turretHeight+3, pos.z+(wallThickness//2+3), turretRoofColor, turretRoofSubColor))
-        turretRoofQueue.append((pos.x+(wallThickness//2+2), wallY+turretHeight+4, pos.z-(wallThickness//2+2), pos.x+(wallThickness//2+2), wallY+turretHeight+4, pos.z+(wallThickness//2+2), turretRoofColor, turretRoofSubColor))
-        turretRoofQueue.append((pos.x+(wallThickness//2+2), wallY+turretHeight+5, pos.z-(wallThickness//2+2), pos.x+(wallThickness//2+2), wallY+turretHeight+5, pos.z+(wallThickness//2+2), turretRoofColor, turretRoofSubColor))
-        turretRoofQueue.append((pos.x+(wallThickness//2+1), wallY+turretHeight+6, pos.z-(wallThickness//2+1), pos.x+(wallThickness//2+1), wallY+turretHeight+6, pos.z+(wallThickness//2+1), turretRoofColor, turretRoofSubColor))
-        turretRoofQueue.append((pos.x+(wallThickness//2+1), wallY+turretHeight+7, pos.z-(wallThickness//2+1), pos.x+(wallThickness//2+1), wallY+turretHeight+7, pos.z+(wallThickness//2+1), turretRoofColor, turretRoofSubColor))
-        turretRoofQueue.append((pos.x+(wallThickness//2+0), wallY+turretHeight+8, pos.z-(wallThickness//2+0), pos.x+(wallThickness//2+0), wallY+turretHeight+8, pos.z+(wallThickness//2+0), turretRoofColor, turretRoofSubColor))
-        turretRoofQueue.append((pos.x+(wallThickness//2+0), wallY+turretHeight+9, pos.z-(wallThickness//2+0), pos.x+(wallThickness//2+0), wallY+turretHeight+9, pos.z+(wallThickness//2+0), turretRoofColor, turretRoofSubColor))
-
-        # turret roof (south)
-        turretRoofQueue.append((pos.x-(wallThickness//2+3), wallY+turretHeight+2, pos.z+(wallThickness//2+3), pos.x+(wallThickness//2+3), wallY+turretHeight+2, pos.z+(wallThickness//2+3), turretRoofColor, turretRoofSubColor))
-        turretRoofQueue.append((pos.x-(wallThickness//2+3), wallY+turretHeight+3, pos.z+(wallThickness//2+3), pos.x+(wallThickness//2+3), wallY+turretHeight+3, pos.z+(wallThickness//2+3), turretRoofColor, turretRoofSubColor))
-        turretRoofQueue.append((pos.x-(wallThickness//2+2), wallY+turretHeight+4, pos.z+(wallThickness//2+2), pos.x+(wallThickness//2+2), wallY+turretHeight+4, pos.z+(wallThickness//2+2), turretRoofColor, turretRoofSubColor))
-        turretRoofQueue.append((pos.x-(wallThickness//2+2), wallY+turretHeight+5, pos.z+(wallThickness//2+2), pos.x+(wallThickness//2+2), wallY+turretHeight+5, pos.z+(wallThickness//2+2), turretRoofColor, turretRoofSubColor))
-        turretRoofQueue.append((pos.x-(wallThickness//2+1), wallY+turretHeight+6, pos.z+(wallThickness//2+1), pos.x+(wallThickness//2+1), wallY+turretHeight+6, pos.z+(wallThickness//2+1), turretRoofColor, turretRoofSubColor))
-        turretRoofQueue.append((pos.x-(wallThickness//2+1), wallY+turretHeight+7, pos.z+(wallThickness//2+1), pos.x+(wallThickness//2+1), wallY+turretHeight+7, pos.z+(wallThickness//2+1), turretRoofColor, turretRoofSubColor))
-        turretRoofQueue.append((pos.x-(wallThickness//2+0), wallY+turretHeight+8, pos.z+(wallThickness//2+0), pos.x+(wallThickness//2+0), wallY+turretHeight+8, pos.z+(wallThickness//2+0), turretRoofColor, turretRoofSubColor))
-        turretRoofQueue.append((pos.x-(wallThickness//2+0), wallY+turretHeight+9, pos.z+(wallThickness//2+0), pos.x+(wallThickness//2+0), wallY+turretHeight+9, pos.z+(wallThickness//2+0), turretRoofColor, turretRoofSubColor))
+        for j in range(wallThickness + 1, -1, -1):
+            turretRoofQueue.append((pos.x-j, wallY+turretHeight+2+2*(wallThickness+1-j), pos.z-j, pos.x+j, wallY+turretHeight+3+2*(wallThickness+1-j), pos.z+j, turretRoofColor, turretRoofSubColor))
         
-        # turret roof (west)
-        turretRoofQueue.append((pos.x-(wallThickness//2+3), wallY+turretHeight+2, pos.z-(wallThickness//2+3), pos.x-(wallThickness//2+3), wallY+turretHeight+2, pos.z+(wallThickness//2+3), turretRoofColor, turretRoofSubColor))
-        turretRoofQueue.append((pos.x-(wallThickness//2+3), wallY+turretHeight+3, pos.z-(wallThickness//2+3), pos.x-(wallThickness//2+3), wallY+turretHeight+3, pos.z+(wallThickness//2+3), turretRoofColor, turretRoofSubColor))
-        turretRoofQueue.append((pos.x-(wallThickness//2+2), wallY+turretHeight+4, pos.z-(wallThickness//2+2), pos.x-(wallThickness//2+2), wallY+turretHeight+4, pos.z+(wallThickness//2+2), turretRoofColor, turretRoofSubColor))
-        turretRoofQueue.append((pos.x-(wallThickness//2+2), wallY+turretHeight+5, pos.z-(wallThickness//2+2), pos.x-(wallThickness//2+2), wallY+turretHeight+5, pos.z+(wallThickness//2+2), turretRoofColor, turretRoofSubColor))
-        turretRoofQueue.append((pos.x-(wallThickness//2+1), wallY+turretHeight+6, pos.z-(wallThickness//2+1), pos.x-(wallThickness//2+1), wallY+turretHeight+6, pos.z+(wallThickness//2+1), turretRoofColor, turretRoofSubColor))
-        turretRoofQueue.append((pos.x-(wallThickness//2+1), wallY+turretHeight+7, pos.z-(wallThickness//2+1), pos.x-(wallThickness//2+1), wallY+turretHeight+7, pos.z+(wallThickness//2+1), turretRoofColor, turretRoofSubColor))
-        turretRoofQueue.append((pos.x-(wallThickness//2+0), wallY+turretHeight+8, pos.z-(wallThickness//2+0), pos.x-(wallThickness//2+0), wallY+turretHeight+8, pos.z+(wallThickness//2+0), turretRoofColor, turretRoofSubColor))
-        turretRoofQueue.append((pos.x-(wallThickness//2+0), wallY+turretHeight+9, pos.z-(wallThickness//2+0), pos.x-(wallThickness//2+0), wallY+turretHeight+9, pos.z+(wallThickness//2+0), turretRoofColor, turretRoofSubColor))
-
-        # turret roof (top spire)
-        turretRoofQueue.append((pos.x-(wallThickness//2-1), wallY+turretHeight+10, pos.z, pos.x+(wallThickness//2-1), wallY+turretHeight+15, pos.z, turretRoofColor, turretRoofSubColor))
-
     elif (step['cmd'] == 'gate'):
         if (heading == 0 or heading == 180): # north or south
             if (heading == 180): # heading south, increment position first
