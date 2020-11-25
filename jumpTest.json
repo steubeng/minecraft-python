@@ -20,19 +20,12 @@
 		"parapetColor": [98, 3]
 		},
 	"path": [
-		{"cmd": "move", "argv": 30},
+		{"cmd": "pen", "argv": "down"},
+		{"cmd": "move", "argv": 11},
 		{"cmd": "right", "argv": 90},
 		{"cmd": "turret", "argv": 4},
-		{"cmd": "move", "argv": 10},
-		{"cmd": "gate", "argv": 11},
-		{"cmd": "move", "argv": 10},
-		{"cmd": "right", "argv": 90},
-		{"cmd": "turret", "argv": 26},
-		{"cmd": "move", "argv": 30},
-		{"cmd": "right", "argv": 90},
-		{"cmd": "turret", "argv": 8},
-		{"cmd": "move", "argv": 30},
-		{"cmd": "right", "argv": 90},
-		{"cmd": "turret", "argv": 10}
+		{"cmd": "move", "argv": 11},
+		{"cmd": "jump", "argv": 8},
+		{"cmd": "move", "argv": 11}
 	]
 }

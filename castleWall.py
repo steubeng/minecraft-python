@@ -2,11 +2,10 @@
 
 # TODO: make torches
 # TODO: upsidedown stair blocks in turret doors
-# TODO: add parapet blocks
 # TODO: add something cylindrical
 # TODO: box-top of turret with ladder acesnding to ascend
 # TODO: vary height of gate above the wallY
-# TODO: implement GOTO command to move without building
+# TODO: parapet continues above gate
 
 
 from mcpi.minecraft import Minecraft
@@ -52,7 +51,6 @@ maxWallHeight = config['maxWallHeight']
 wallThickness = config['wallThickness']
 allure = config['allure']
 parapet = config['parapet'] and allure
-penDown = config['penDown']
 heading = config['initialHeading']
 prevHeading = heading
 prevCmd = ""
@@ -93,13 +91,6 @@ for i in range(len(data['path'])):
     argv = step['argv']
     print('step', i+1, 'of', len(data['path']),', cmd:', step['cmd'], ', argv:', argv,', heading:', heading)
     
-    ### pen
-    if (step['cmd'] == 'pen'):
-        if (argv == 'up'):
-            penDown = False
-        else:
-            penDown = True
-        
     ### move
     elif (step['cmd'] == 'move'):
         if (heading == 0): # north
@@ -265,33 +256,6 @@ for i in range(len(data['path'])):
                         wallY += 1
                     elif (wallY - mc.getHeight(pos.x, pos.z) > maxWallHeight):
                         wallY -= 1
-            
-            
-            
-            
-            
-            
-            
-            
-#                if (penDown):                    
-#                    if (x == 0):
-#                        wallQueue.append((pos.x, mc.getHeight(pos.x, pos.z), pos.z-(wallThickness//2), pos.x+(wallThickness//2), wallY, pos.z+(wallThickness//2), wallColor, wallSubColor))
-#                    elif (x == argv - 1):
-#                        wallQueue.append((pos.x, mc.getHeight(pos.x, pos.z), pos.z-(wallThickness//2), pos.x-(wallThickness//2), wallY, pos.z+(wallThickness//2), wallColor, wallSubColor))
-#                    else:
-#                        wallQueue.append((pos.x, min(wallY, mc.getHeight(pos.x, pos.z)), pos.z-(wallThickness//2), pos.x, wallY, pos.z+(wallThickness//2), wallColor, wallSubColor))
-#                if (x < argv - 1):
-#                    if (allure):
-#                        allureQueue.append((pos.x-(wallThickness//2+1), wallY+1, pos.z-(wallThickness//2+1), pos.x+(wallThickness//2+1), wallY+1, pos.z+(wallThickness//2+1), allureColor, allureSubColor))
-#                    pos.x -= 1
-#                if (x == argv - 1):
-#                    if (allure):
-#                        allureQueue.append((pos.x-(wallThickness//2+1), wallY+1, pos.z-(wallThickness//2+1), pos.x+(wallThickness//2+1), wallY+1, pos.z+(wallThickness//2+1), allureColor, allureSubColor))
-#                if ((x < argv - (wallThickness//2)) and (x > (wallThickness//2))):
-#                    if (wallY - mc.getHeight(pos.x, pos.z) < minWallHeight):
-#                        wallY += 1
-#                    elif (wallY - mc.getHeight(pos.x, pos.z) > maxWallHeight):
-#                        wallY -= 1
 
     ### turn left
     elif (step['cmd'] == 'left'):
@@ -305,10 +269,6 @@ for i in range(len(data['path'])):
         prevHeading = heading
         debugQueue.append((pos.x, wallY + 3, pos.z, pos.x, wallY + 3, pos.z, 103))
         heading = (heading + argv) % 360
-        
-    ### color
-    elif (step['cmd'] == 'color'):
-        color = argv
         
     elif (step['cmd'] == 'turret'):
         turretHeight = argv
@@ -430,6 +390,17 @@ for i in range(len(data['path'])):
             if (heading == 270): # heading west, increment position after drawing
                 pos.x-= argv
                 
+    elif (step['cmd'] == "jump"):
+        if (heading == 0): # north
+            pos.z -= argv
+        elif (heading == 90): # east
+            pos.x += argv
+        elif (heading == 180): # south
+            pos.z += argv
+        elif (heding == 270): # west
+            pos.x -= argv
+        wallY = mc.getHeight(pos.x, pos.z) + (maxWallHeight + minWallHeight) / 2
+        
     prevCmd = step['cmd']    
 
 

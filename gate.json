@@ -2,10 +2,10 @@
 	"config": {
 		"minWallHeight": 4,
 		"maxWallHeight": 8,
-		"initialHeading": 270,
-		"penDown": true,
+		"initialHeading": 90,
 		"wallThickness": 3,
-		"allure": true
+		"allure": true,
+		"parapet": true
 		},
 	"color": {
 		"wallColor": [48],
@@ -16,10 +16,10 @@
 		"gateColor": [113],
 		"gateWallColor": [98],
 		"gateFloorColor": [4],
-		"decorativeStairColor": 109
+		"decorativeStairColor": 109,
+		"parapetColor": [98, 3]
 		},
 	"path": [
-		{"cmd": "pen", "argv": "down"},
 		{"cmd": "move", "argv": 8},
 		{"cmd": "gate", "argv": 11},
 		{"cmd": "move", "argv": 8}

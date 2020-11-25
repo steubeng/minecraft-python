@@ -8,31 +8,31 @@
 		"parapet": true
 		},
 	"color": {
-		"wallColor": [48],
+		"wallColor": [35, 6],
 		"allureColor": [98],
-		"turretColor": [98],
-		"turretWindowColor": [160, 9],
-		"turretRoofColor": [48],
+		"turretColor": [35, 2],
+		"turretWindowColor": [160, 6],
+		"turretRoofColor": [98],
 		"gateColor": [113],
-		"gateWallColor": [98],
-		"gateFloorColor": [4],
+		"gateWallColor": [159, 6],
+		"gateFloorColor": [225],
 		"decorativeStairColor": 109,
-		"parapetColor": [98, 3]
+		"parapetColor": [159, 6]
 		},
 	"path": [
 		{"cmd": "move", "argv": 30},
 		{"cmd": "right", "argv": 90},
-		{"cmd": "turret", "argv": 4},
+		{"cmd": "turret", "argv": 8},
 		{"cmd": "move", "argv": 10},
 		{"cmd": "gate", "argv": 11},
 		{"cmd": "move", "argv": 10},
 		{"cmd": "right", "argv": 90},
-		{"cmd": "turret", "argv": 26},
+		{"cmd": "turret", "argv": 8},
 		{"cmd": "move", "argv": 30},
 		{"cmd": "right", "argv": 90},
 		{"cmd": "turret", "argv": 8},
 		{"cmd": "move", "argv": 30},
 		{"cmd": "right", "argv": 90},
-		{"cmd": "turret", "argv": 10}
+		{"cmd": "turret", "argv": 8}
 	]
 }
