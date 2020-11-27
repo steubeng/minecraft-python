@@ -4,6 +4,8 @@
 # TODO: box-top of turret with ladder acesnding to ascend
 # TODO: vary height of gate above the wallY
 # TODO: parapet continues above gate
+# TODO: half blocks above turret doors
+# TODO: canons
 
 
 from mcpi.minecraft import Minecraft
@@ -60,6 +62,7 @@ debugQueue = deque([])
 turretQueue = deque([])
 turretRoofQueue = deque([])
 gateQueue = deque([])
+cannonQueue = deque([])
 
 # mcpi setup and initialization
 mc = Minecraft.create()
@@ -67,6 +70,97 @@ mc.postToChat("Castle Wall!")
 pos = mc.player.getPos()
 wallY = mc.getHeight(pos.x, pos.z) + (maxWallHeight + minWallHeight) / 2
 
+def cannon(x, y, z, heading, type=2):
+    if (type == 1):
+        if (heading == 0):
+            cannonQueue.append((x, y, z, 145, 0)) # anvil
+            cannonQueue.append((x, y, z-1, 23, 2)) # dispenser
+            cannonQueue.append((x, y+1, z, 69, 5)) # lever
+            cannonQueue.append((x+1, y, z, 96, 7)) # trap door 1
+            cannonQueue.append((x-1, y, z, 96, 6)) # trap door 2
+        elif (heading == 90):
+            cannonQueue.append((x, y, z, 145, 1)) # anvil
+            cannonQueue.append((x+1, y, z, 23, 5)) # dispenser
+            cannonQueue.append((x, y+1, z, 69, 5)) # lever
+            cannonQueue.append((x, y, z+1, 96, 5)) # trap door 1
+            cannonQueue.append((x, y, z-1, 96, 4)) # trap door 2
+        elif (heading == 180):
+            cannonQueue.append((x, y, z, 145, 0)) # anvil
+            cannonQueue.append((x, y, z+1, 23, 3)) # dispenser
+            cannonQueue.append((x, y+1, z, 69, 5)) # lever
+            cannonQueue.append((x+1, y, z, 96, 7)) # trap door 1
+            cannonQueue.append((x-1, y, z, 96, 6)) # trap door 2
+        elif (heading == 270):
+            cannonQueue.append((x, y, z, 145, 1)) # anvil
+            cannonQueue.append((x-1, y, z, 23, 4)) # dispenser
+            cannonQueue.append((x, y+1, z, 69, 5)) # lever
+            cannonQueue.append((x, y, z+1, 96, 5)) # trap door 1
+            cannonQueue.append((x, y, z-1, 96, 4)) # trap door 2
+    elif (type == 2):
+        if (heading == 0):
+            cannonQueue.append((x+1, y+1, z, 134, 2)) # right side, north, upper
+            cannonQueue.append((x-1, y+1, z, 134, 2)) # left side, north, upper
+            cannonQueue.append((x+1, y+1, z+1, 134, 3)) # right side, south, upper
+            cannonQueue.append((x-1, y+1, z+1, 134, 3)) # left side, south, upper
+            cannonQueue.append((x+1, y, z, 134, 6)) # right side, north, lower
+            cannonQueue.append((x-1, y, z, 134, 6)) # left side, north, lower
+            cannonQueue.append((x+1, y, z+1, 134, 7)) # right side, south, lower
+            cannonQueue.append((x-1, y, z+1, 134, 7)) # left side, south, lower
+            cannonQueue.append((x, y, z+1, 44, 42)) # wood slab
+            cannonQueue.append((x, y, z+2, 44, 42)) # wood slab
+            cannonQueue.append((x, y, z+3, 5)) # oak wood
+            cannonQueue.append((x, y, z+4, 44, 2)) # wood slab
+            cannonQueue.append((x, y+1, z-2, x, y+1, z+2, 35, 15))
+            cannonQueue.append((x, y+2, z+2, 76)) # redstone torch
+            cannonQueue.append((x, y+1, z-3, 77, 4)) # button
+        elif (heading == 90):
+            cannonQueue.append((x, y+1, z-1, 134, 1)) # north side, right, upper
+            cannonQueue.append((x, y+1, z+1, 134, 1)) # south side, right, upper
+            cannonQueue.append((x-1, y+1, z-1, 134, 0)) # north side, left, upper
+            cannonQueue.append((x-1, y+1, z+1, 134, 0)) # south side, left, upper
+            cannonQueue.append((x-1, y, z+1, 134, 4)) # north side, right, lower
+            cannonQueue.append((x-1, y, z-1, 134, 4)) # south side, right, lower
+            cannonQueue.append((x, y, z+1, 134, 5)) # north side, left, lower
+            cannonQueue.append((x, y, z-1, 134, 5)) # south side, left, lower
+            cannonQueue.append((x-1, y, z, 44, 42)) # wood slab
+            cannonQueue.append((x-2, y, z, 44, 42)) # wood slab
+            cannonQueue.append((x-3, y, z, 5)) # oak wood
+            cannonQueue.append((x-4, y, z, 44, 2)) # wood slab
+            cannonQueue.append((x-2, y+1, z, x+2, y+1, z, 35, 15))
+            cannonQueue.append((x-2, y+2, z, 76)) # redstone torch
+            cannonQueue.append((x+3, y+1, z, 77, 1)) # button
+        elif (heading == 180):
+            cannonQueue.append((x+1, y+1, z-1, 134, 2)) # right side, north, upper
+            cannonQueue.append((x-1, y+1, z-1, 134, 2)) # left side, north, upper
+            cannonQueue.append((x+1, y+1, z, 134, 3)) # right side, south, upper
+            cannonQueue.append((x-1, y+1, z, 134, 3)) # left side, south, upper
+            cannonQueue.append((x+1, y, z-1, 134, 6)) # right side, north, lower
+            cannonQueue.append((x-1, y, z-1, 134, 6)) # left side, north, lower
+            cannonQueue.append((x+1, y, z, 134, 7)) # right side, south, lower
+            cannonQueue.append((x-1, y, z, 134, 7)) # left side, south, lower
+            cannonQueue.append((x, y, z-1, 44, 42)) # wood slab
+            cannonQueue.append((x, y, z-2, 44, 42)) # wood slab
+            cannonQueue.append((x, y, z-3, 5)) # oak wood
+            cannonQueue.append((x, y, z-4, 44, 2)) # wood slab
+            cannonQueue.append((x, y+1, z-2, x, y+1, z+2, 35, 15))
+            cannonQueue.append((x, y+2, z-2, 76)) # redstone torch
+            cannonQueue.append((x, y+1, z+3, 77, 3)) # button
+        elif (heading == 270):
+            cannonQueue.append((x+1, y+1, z-1, 134, 1)) # north side, right, upper
+            cannonQueue.append((x+1, y+1, z+1, 134, 1)) # south side, right, upper
+            cannonQueue.append((x, y+1, z-1, 134, 0)) # north side, left, upper
+            cannonQueue.append((x, y+1, z+1, 134, 0)) # south side, left, upper
+            cannonQueue.append((x, y, z+1, 134, 4)) # north side, right, lower
+            cannonQueue.append((x, y, z-1, 134, 4)) # south side, right, lower
+            cannonQueue.append((x+1, y, z+1, 134, 5)) # north side, left, lower
+            cannonQueue.append((x+1, y, z-1, 134, 5)) # south side, left, lower
+            cannonQueue.append((x+1, y, z, 44, 42)) # wood slab
+            cannonQueue.append((x+2, y, z, 44, 42)) # wood slab
+            cannonQueue.append((x+3, y, z, 5)) # oak wood
+            cannonQueue.append((x+4, y, z, 44, 2)) # wood slab
+            cannonQueue.append((x+2, y+1, z, x-2, y+1, z, 35, 15))
+            cannonQueue.append((x+2, y+2, z, 76)) # redstone torch
+            cannonQueue.append((x-3, y+1, z, 77, 2)) # button
 
 def processSetBlocksQueue(queue):
     for i in range(len(queue)):
@@ -421,6 +515,103 @@ for i in range(len(data['path'])):
             pos.x -= argv
         wallY = mc.getHeight(pos.x, pos.z) + (maxWallHeight + minWallHeight) / 2
         
+    elif (step['cmd'] == 'cannon'):
+        if (argv == 0):
+            y = mc.getHeight(pos.x, pos.z)
+            # clear the parapet from the area
+            cannonQueue.append((pos.x-(wallThickness//2), wallY+2, pos.z-(wallThickness//2+1), pos.x+(wallThickness//2), wallY+3, pos.z-(wallThickness//2+1), block.AIR))
+            
+            # wall
+            cannonQueue.append((pos.x-(wallThickness//2), wallY, pos.z-(wallThickness//2+1), pos.x+(wallThickness//2), y-5, pos.z-(wallThickness//2+4), wallColor, wallSubColor))
+            
+            # allure
+            cannonQueue.append((pos.x-(wallThickness//2+1), wallY+1, pos.z-(wallThickness//2+2), pos.x+(wallThickness//2+1), wallY+1, pos.z-(wallThickness//2+5), allureColor, allureSubColor))
+
+            # parapet and torches
+            cannonQueue.append((pos.x-(wallThickness//2+1), wallY+2, pos.z-(wallThickness//2+3), parapetColor, parapetSubColor))
+            cannonQueue.append((pos.x-(wallThickness//2+1), wallY+2, pos.z-(wallThickness//2+5), parapetColor, parapetSubColor))
+            cannonQueue.append((pos.x+(wallThickness//2+1), wallY+2, pos.z-(wallThickness//2+3), parapetColor, parapetSubColor))
+            cannonQueue.append((pos.x+(wallThickness//2+1), wallY+2, pos.z-(wallThickness//2+5), parapetColor, parapetSubColor))
+            cannonQueue.append((pos.x, wallY+2, pos.z-(wallThickness//2+5), parapetColor, parapetSubColor))
+            cannonQueue.append((pos.x-(wallThickness//2+1), wallY+3, pos.z-(wallThickness//2+3), block.TORCH))
+            cannonQueue.append((pos.x-(wallThickness//2+1), wallY+3, pos.z-(wallThickness//2+5), block.TORCH))
+            cannonQueue.append((pos.x+(wallThickness//2+1), wallY+3, pos.z-(wallThickness//2+3), block.TORCH))
+            cannonQueue.append((pos.x+(wallThickness//2+1), wallY+3, pos.z-(wallThickness//2+5), block.TORCH))
+
+            # finally, the cannon!
+            cannon(pos.x, wallY+2, pos.z-5, argv)
+        elif (argv == 90):
+            y = mc.getHeight(pos.x, pos.z)
+            # clear the parapet from the area
+            cannonQueue.append((pos.x+(wallThickness//2+1), wallY+2, pos.z-(wallThickness//2), pos.x+(wallThickness//2+1), wallY+3, pos.z+(wallThickness//2), block.AIR))
+            
+            # wall
+            cannonQueue.append((pos.x+(wallThickness//2+1), wallY, pos.z-(wallThickness//2), pos.x+(wallThickness//2+4), y-5, pos.z+(wallThickness//2), wallColor, wallSubColor))
+            
+            # allure
+            cannonQueue.append((pos.x+(wallThickness//2+2), wallY+1, pos.z-(wallThickness//2+1), pos.x+(wallThickness//2+5), wallY+1, pos.z+(wallThickness//2+1), allureColor, allureSubColor))
+
+            # parapet and torches
+            cannonQueue.append((pos.x+(wallThickness//2+3), wallY+2, pos.z-(wallThickness//2+1), parapetColor, parapetSubColor))
+            cannonQueue.append((pos.x+(wallThickness//2+5), wallY+2, pos.z-(wallThickness//2+1), parapetColor, parapetSubColor))
+            cannonQueue.append((pos.x+(wallThickness//2+3), wallY+2, pos.z+(wallThickness//2+1), parapetColor, parapetSubColor))
+            cannonQueue.append((pos.x+(wallThickness//2+5), wallY+2, pos.z+(wallThickness//2+1), parapetColor, parapetSubColor))
+            cannonQueue.append((pos.x+(wallThickness//2+5), wallY+2, pos.z, parapetColor, parapetSubColor))
+            cannonQueue.append((pos.x+(wallThickness//2+3), wallY+3, pos.z-(wallThickness//2+1), block.TORCH))
+            cannonQueue.append((pos.x+(wallThickness//2+5), wallY+3, pos.z-(wallThickness//2+1), block.TORCH))
+            cannonQueue.append((pos.x+(wallThickness//2+3), wallY+3, pos.z+(wallThickness//2+1), block.TORCH))
+            cannonQueue.append((pos.x+(wallThickness//2+5), wallY+3, pos.z+(wallThickness//2+1), block.TORCH))
+
+            # finally, the cannon!
+            cannon(pos.x+5, wallY+2, pos.z, argv)
+        elif (argv == 180):
+            y = mc.getHeight(pos.x, pos.z)
+            # clear the parapet from the area
+            cannonQueue.append((pos.x-(wallThickness//2), wallY+2, pos.z+(wallThickness//2+1), pos.x+(wallThickness//2), wallY+3, pos.z+(wallThickness//2+1), block.AIR))
+            
+            # wall
+            cannonQueue.append((pos.x-(wallThickness//2), wallY, pos.z+(wallThickness//2+1), pos.x+(wallThickness//2), y-5, pos.z+(wallThickness//2+4), wallColor, wallSubColor))
+            
+            # allure
+            cannonQueue.append((pos.x-(wallThickness//2+1), wallY+1, pos.z+(wallThickness//2+2), pos.x+(wallThickness//2+1), wallY+1, pos.z+(wallThickness//2+5), allureColor, allureSubColor))
+
+            # parapet and torches
+            cannonQueue.append((pos.x-(wallThickness//2+1), wallY+2, pos.z+(wallThickness//2+3), parapetColor, parapetSubColor))
+            cannonQueue.append((pos.x-(wallThickness//2+1), wallY+2, pos.z+(wallThickness//2+5), parapetColor, parapetSubColor))
+            cannonQueue.append((pos.x+(wallThickness//2+1), wallY+2, pos.z+(wallThickness//2+3), parapetColor, parapetSubColor))
+            cannonQueue.append((pos.x+(wallThickness//2+1), wallY+2, pos.z+(wallThickness//2+5), parapetColor, parapetSubColor))
+            cannonQueue.append((pos.x, wallY+2, pos.z+(wallThickness//2+5), parapetColor, parapetSubColor))
+            cannonQueue.append((pos.x-(wallThickness//2+1), wallY+3, pos.z+(wallThickness//2+3), block.TORCH))
+            cannonQueue.append((pos.x-(wallThickness//2+1), wallY+3, pos.z+(wallThickness//2+5), block.TORCH))
+            cannonQueue.append((pos.x+(wallThickness//2+1), wallY+3, pos.z+(wallThickness//2+3), block.TORCH))
+            cannonQueue.append((pos.x+(wallThickness//2+1), wallY+3, pos.z+(wallThickness//2+5), block.TORCH))
+
+            # finally, the cannon!
+            cannon(pos.x, wallY+2, pos.z+5, argv)
+        elif (argv == 270):
+            y = mc.getHeight(pos.x, pos.z)
+            # clear the parapet from the area
+            cannonQueue.append((pos.x-(wallThickness//2+1), wallY+2, pos.z-(wallThickness//2), pos.x-(wallThickness//2+1), wallY+3, pos.z+(wallThickness//2), block.AIR))
+            
+            # wall
+            cannonQueue.append((pos.x-(wallThickness//2+1), wallY, pos.z-(wallThickness//2), pos.x-(wallThickness//2+4), y-5, pos.z+(wallThickness//2), wallColor, wallSubColor))
+            
+            # allure
+            cannonQueue.append((pos.x-(wallThickness//2+2), wallY+1, pos.z-(wallThickness//2+1), pos.x-(wallThickness//2+5), wallY+1, pos.z+(wallThickness//2+1), allureColor, allureSubColor))
+
+            # parapet and torches
+            cannonQueue.append((pos.x-(wallThickness//2+3), wallY+2, pos.z-(wallThickness//2+1), parapetColor, parapetSubColor))
+            cannonQueue.append((pos.x-(wallThickness//2+5), wallY+2, pos.z-(wallThickness//2+1), parapetColor, parapetSubColor))
+            cannonQueue.append((pos.x-(wallThickness//2+3), wallY+2, pos.z+(wallThickness//2+1), parapetColor, parapetSubColor))
+            cannonQueue.append((pos.x-(wallThickness//2+5), wallY+2, pos.z+(wallThickness//2+1), parapetColor, parapetSubColor))
+            cannonQueue.append((pos.x-(wallThickness//2+5), wallY+2, pos.z, parapetColor, parapetSubColor))
+            cannonQueue.append((pos.x-(wallThickness//2+3), wallY+3, pos.z-(wallThickness//2+1), block.TORCH))
+            cannonQueue.append((pos.x-(wallThickness//2+5), wallY+3, pos.z-(wallThickness//2+1), block.TORCH))
+            cannonQueue.append((pos.x-(wallThickness//2+3), wallY+3, pos.z+(wallThickness//2+1), block.TORCH))
+            cannonQueue.append((pos.x-(wallThickness//2+5), wallY+3, pos.z+(wallThickness//2+1), block.TORCH))
+
+            # finally, the cannon!
+            cannon(pos.x-5, wallY+2, pos.z, argv, 1)
     prevCmd = step['cmd']    
 
 
@@ -439,5 +630,7 @@ processSetBlocksQueue(turretRoofQueue)
 print('processing gateQueue')
 processSetBlocksQueue(gateQueue)
 
+print('processing cannonQueue, size:', len(cannonQueue))
+processSetBlocksQueue(cannonQueue)
 # print('processing debugQueue')
 # processSetBlocksQueue(debugQueue)

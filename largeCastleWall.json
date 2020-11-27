@@ -2,7 +2,7 @@
 	"config": {
 		"minWallHeight": 4,
 		"maxWallHeight": 8,
-		"initialHeading": 180,
+		"initialHeading": 90,
 		"wallThickness": 3,
 		"allure": true,
 		"parapet": true
@@ -11,7 +11,7 @@
 		"wallColor": [48],
 		"allureColor": [98],
 		"turretColor": [98],
-		"turretWindowColor": [160, 9],
+		"turretWindowColor": [191],
 		"turretRoofColor": [48],
 		"gateColor": [113],
 		"gateWallColor": [98],

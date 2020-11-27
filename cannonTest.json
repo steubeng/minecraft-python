@@ -1,0 +1,33 @@
+{
+	"config": {
+		"minWallHeight": 4,
+		"maxWallHeight": 8,
+		"initialHeading": 0,
+		"wallThickness": 3,
+		"allure": true,
+		"parapet": true
+		},
+	"color": {
+		"wallColor": [48],
+		"allureColor": [98],
+		"turretColor": [98],
+		"turretWindowColor": [160, 9],
+		"turretRoofColor": [48],
+		"gateColor": [113],
+		"gateWallColor": [98],
+		"gateFloorColor": [4],
+		"decorativeStairColor": 109,
+		"parapetColor": [98, 3]
+		},
+	"path": [
+		{"cmd": "move", "argv": 15},
+		{"cmd": "cannon", "argv": 270},
+		{"cmd": "move", "argv": 15}
+	]
+}
+
+
+
+
+
+
