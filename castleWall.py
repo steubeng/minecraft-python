@@ -611,7 +611,7 @@ for i in range(len(data['path'])):
             cannonQueue.append((pos.x-(wallThickness//2+5), wallY+3, pos.z+(wallThickness//2+1), block.TORCH))
 
             # finally, the cannon!
-            cannon(pos.x-5, wallY+2, pos.z, argv, 1)
+            cannon(pos.x-5, wallY+2, pos.z, argv)
     prevCmd = step['cmd']    
 
 
