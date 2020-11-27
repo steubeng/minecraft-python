@@ -2,7 +2,7 @@
 	"config": {
 		"minWallHeight": 4,
 		"maxWallHeight": 8,
-		"initialHeading": 90,
+		"initialHeading": 0,
 		"wallThickness": 3,
 		"allure": true,
 		"parapet": true
@@ -20,18 +20,28 @@
 		"parapetColor": [98, 3]
 		},
 	"path": [
-		{"cmd": "move", "argv": 30},
+		{"cmd": "move", "argv": 15},
+		{"cmd": "cannon", "argv": 270},
+		{"cmd": "move", "argv": 15},
 		{"cmd": "right", "argv": 90},
 		{"cmd": "turret", "argv": 4},
-		{"cmd": "move", "argv": 10},
+		{"cmd": "move", "argv": 9},
+		{"cmd": "cannon", "argv": 0},
+		{"cmd": "move", "argv": 5},
 		{"cmd": "gate", "argv": 11},
-		{"cmd": "move", "argv": 10},
+		{"cmd": "move", "argv": 5},
+		{"cmd": "cannon", "argv": 0},
+		{"cmd": "move", "argv": 9},
 		{"cmd": "right", "argv": 90},
 		{"cmd": "turret", "argv": 26},
-		{"cmd": "move", "argv": 30},
+		{"cmd": "move", "argv": 15},
+		{"cmd": "cannon", "argv": 90},
+		{"cmd": "move", "argv": 15},
 		{"cmd": "right", "argv": 90},
 		{"cmd": "turret", "argv": 8},
-		{"cmd": "move", "argv": 30},
+		{"cmd": "move", "argv": 17},
+		{"cmd": "cannon", "argv": 180},
+		{"cmd": "move", "argv": 17},
 		{"cmd": "right", "argv": 90},
 		{"cmd": "turret", "argv": 10}
 	]

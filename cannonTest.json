@@ -21,7 +21,7 @@
 		},
 	"path": [
 		{"cmd": "move", "argv": 15},
-		{"cmd": "cannon", "argv": 270},
+		{"cmd": "cannon", "argv": "left"},
 		{"cmd": "move", "argv": 15}
 	]
 }

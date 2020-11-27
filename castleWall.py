@@ -516,7 +516,12 @@ for i in range(len(data['path'])):
         wallY = mc.getHeight(pos.x, pos.z) + (maxWallHeight + minWallHeight) / 2
         
     elif (step['cmd'] == 'cannon'):
-        if (argv == 0):
+        cannonHeading = 0
+        if (argv == "right"):
+            cannonHeading = heading + 90
+        elif (argv == "left"):
+            cannonHeading = heading - 90
+        if (cannonHeading == 0):
             y = mc.getHeight(pos.x, pos.z)
             # clear the parapet from the area
             cannonQueue.append((pos.x-(wallThickness//2), wallY+2, pos.z-(wallThickness//2+1), pos.x+(wallThickness//2), wallY+3, pos.z-(wallThickness//2+1), block.AIR))
@@ -539,8 +544,8 @@ for i in range(len(data['path'])):
             cannonQueue.append((pos.x+(wallThickness//2+1), wallY+3, pos.z-(wallThickness//2+5), block.TORCH))
 
             # finally, the cannon!
-            cannon(pos.x, wallY+2, pos.z-5, argv)
-        elif (argv == 90):
+            cannon(pos.x, wallY+2, pos.z-5, cannonHeading)
+        elif (cannonHeading == 90):
             y = mc.getHeight(pos.x, pos.z)
             # clear the parapet from the area
             cannonQueue.append((pos.x+(wallThickness//2+1), wallY+2, pos.z-(wallThickness//2), pos.x+(wallThickness//2+1), wallY+3, pos.z+(wallThickness//2), block.AIR))
@@ -563,8 +568,8 @@ for i in range(len(data['path'])):
             cannonQueue.append((pos.x+(wallThickness//2+5), wallY+3, pos.z+(wallThickness//2+1), block.TORCH))
 
             # finally, the cannon!
-            cannon(pos.x+5, wallY+2, pos.z, argv)
-        elif (argv == 180):
+            cannon(pos.x+5, wallY+2, pos.z, cannonHeading)
+        elif (cannonHeading == 180):
             y = mc.getHeight(pos.x, pos.z)
             # clear the parapet from the area
             cannonQueue.append((pos.x-(wallThickness//2), wallY+2, pos.z+(wallThickness//2+1), pos.x+(wallThickness//2), wallY+3, pos.z+(wallThickness//2+1), block.AIR))
@@ -587,8 +592,8 @@ for i in range(len(data['path'])):
             cannonQueue.append((pos.x+(wallThickness//2+1), wallY+3, pos.z+(wallThickness//2+5), block.TORCH))
 
             # finally, the cannon!
-            cannon(pos.x, wallY+2, pos.z+5, argv)
-        elif (argv == 270):
+            cannon(pos.x, wallY+2, pos.z+5, cannonHeading)
+        elif (cannonHeading == 270):
             y = mc.getHeight(pos.x, pos.z)
             # clear the parapet from the area
             cannonQueue.append((pos.x-(wallThickness//2+1), wallY+2, pos.z-(wallThickness//2), pos.x-(wallThickness//2+1), wallY+3, pos.z+(wallThickness//2), block.AIR))
@@ -611,7 +616,7 @@ for i in range(len(data['path'])):
             cannonQueue.append((pos.x-(wallThickness//2+5), wallY+3, pos.z+(wallThickness//2+1), block.TORCH))
 
             # finally, the cannon!
-            cannon(pos.x-5, wallY+2, pos.z, argv)
+            cannon(pos.x-5, wallY+2, pos.z, cannonHeading)
     prevCmd = step['cmd']    
 
 
