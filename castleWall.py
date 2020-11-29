@@ -1,17 +1,11 @@
 # createWall.py
 
 # TODO: add something cylindrical
-# TODO: box-top of turret with ladder acesnding to ascend
 # TODO: vary height of gate above the wallY
 # TODO: parapet continues above gate
-# TODO: half blocks above turret doors
-# TODO: canons
 # TODO: custom getHeight function
-# TODO: torches by gates
-# TODO: embelish turret windows
-# TODO: decorative upsidedown stairs under flat turret roof
-# TODO: add ladder to flat turret roof
-# TODO: add half-blocks between parapets on flat turret roofs
+# TODO: torches by gates (may not be possible to add torches to walls only to floors)
+# TODO: add ladder from allure to ground (similar to cannon)
 
 
 from mcpi.minecraft import Minecraft
@@ -554,7 +548,7 @@ for i in range(len(data['path'])):
             if (heading == 180): # heading south, increment position first
                 pos.z += gateSize
             # clear the entryway of debris
-            gateQueue.append((pos.x-(wallThickness//2), wallY-3, pos.z-(wallThickness//2+1), pos.x+(wallThickness//2), mc.getHeight(pos.x+(wallThickness//2), pos.z-gateSize+(wallThickness//2*2)), pos.z-argv+(wallThickness//2*2), block.AIR)) 
+            gateQueue.append((pos.x-(wallThickness//2), wallY-3, pos.z-(wallThickness//2+1), pos.x+(wallThickness//2), mc.getHeight(pos.x+(wallThickness//2), pos.z-gateSize+(wallThickness//2*2)), pos.z-gateSize+(wallThickness//2*2), block.AIR)) 
             
             # 4 posts
             gateQueue.append((pos.x-1, mc.getHeight(pos.x-1, pos.z-(wallThickness//2+1)), pos.z-(wallThickness//2+1), pos.x-2, wallY-1, pos.z-(wallThickness//2+1), gateWallColor, gateWallSubColor))
@@ -766,7 +760,7 @@ processSetBlocksQueue(turretRoofQueue)
 print('processing gateQueue')
 processSetBlocksQueue(gateQueue)
 
-print('processing cannonQueue, size:', len(cannonQueue))
+print('processing cannonQueue')
 processSetBlocksQueue(cannonQueue)
 # print('processing debugQueue')
 # processSetBlocksQueue(debugQueue)

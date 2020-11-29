@@ -33,7 +33,7 @@
 		{"cmd": "move", "argv": 9},
 		{"cmd": "cannon", "argv": "left"},
 		{"cmd": "move", "argv": 5},
-		{"cmd": "gate", "argv": [11, "open"]},
+		{"cmd": "gate", "argv": [11, "closed"]},
 		{"cmd": "move", "argv": 5},
 		{"cmd": "cannon", "argv": "left"},
 		{"cmd": "move", "argv": 9},
