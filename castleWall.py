@@ -50,6 +50,7 @@ gateWallColor, gateWallSubColor = splitList(color['gateWallColor'])
 gateFloorColor, gateFloorSubColor = splitList(color['gateFloorColor'])
 decorativeStairColor = color['decorativeStairColor'] # this will always be a scalar since the "subColor" will be the "direction"
 parapetColor, parapetSubColor = splitList(color['parapetColor'])
+parapetSlabColor, parapetSlabSubColor = splitList(color['parapetSlabColor'])
 awningColor, awningSubColor = splitList(color['awningColor'])
 awningSupportColor, awningSupportSubColor = splitList(color['awningSupportColor'])
 awningBaseColor, awningBaseSubColor = splitList(color['awningBaseColor'])
@@ -413,6 +414,7 @@ for i in range(len(data['path'])):
         turretQueue.append((pos.x+(wallThickness//2+2), wallY+3, pos.z-1, pos.x+(wallThickness//2+2), wallY+4, pos.z+1, turretWindowColor, turretWindowSubColor))
         turretQueue.append((pos.x-(wallThickness//2+2), wallY+3, pos.z-1, pos.x-(wallThickness//2+2), wallY+4, pos.z+1, turretWindowColor, turretWindowSubColor))
 
+        # window awning/dressing
         if (windowNorth):
             turretQueue.append((pos.x-2, wallY+2, pos.z-(wallThickness//2+3), pos.x+2, wallY+2, pos.z-(wallThickness//2+3), decorativeTurretStairColor, 6))
             turretQueue.append((pos.x-2, wallY+5, pos.z-(wallThickness//2+3), pos.x+2, wallY+5, pos.z-(wallThickness//2+3), decorativeTurretStairColor, 2))
@@ -507,19 +509,26 @@ for i in range(len(data['path'])):
             turretRoofQueue.append((pos.x-(wallThickness+1), wallY+turretHeight+2, pos.z-(wallThickness+1), pos.x+(wallThickness+1), wallY+turretHeight+3, pos.z+(wallThickness+1), turretRoofColor, turretRoofSubColor))
             for j in range(2*(wallThickness+1)):
                 if (j % 2 == 0):
-                
                     # parapet
                     turretRoofQueue.append((pos.x-(wallThickness+1)+j, wallY+turretHeight+4, pos.z-(wallThickness+1), parapetColor, parapetSubColor))
                     turretRoofQueue.append((pos.x+(wallThickness+1)-j, wallY+turretHeight+4, pos.z+(wallThickness+1), parapetColor, parapetSubColor))
                     turretRoofQueue.append((pos.x-(wallThickness+1), wallY+turretHeight+4, pos.z+(wallThickness+1)-j, parapetColor, parapetSubColor))
                     turretRoofQueue.append((pos.x+(wallThickness+1), wallY+turretHeight+4, pos.z-(wallThickness+1)+j, parapetColor, parapetSubColor))
-
                     # torches
                     turretRoofQueue.append((pos.x-(wallThickness+1)+j, wallY+turretHeight+5, pos.z-(wallThickness+1), block.TORCH))
                     turretRoofQueue.append((pos.x+(wallThickness+1)-j, wallY+turretHeight+5, pos.z+(wallThickness+1), block.TORCH))
                     turretRoofQueue.append((pos.x-(wallThickness+1), wallY+turretHeight+5, pos.z+(wallThickness+1)-j, block.TORCH))
                     turretRoofQueue.append((pos.x+(wallThickness+1), wallY+turretHeight+5, pos.z-(wallThickness+1)+j, block.TORCH))
-            
+                else:
+                    turretRoofQueue.append((pos.x-(wallThickness+1)+j, wallY+turretHeight+4, pos.z-(wallThickness+1), parapetSlabColor, parapetSlabSubColor))
+                    turretRoofQueue.append((pos.x+(wallThickness+1)-j, wallY+turretHeight+4, pos.z+(wallThickness+1), parapetSlabColor, parapetSlabSubColor))
+                    turretRoofQueue.append((pos.x-(wallThickness+1), wallY+turretHeight+4, pos.z+(wallThickness+1)-j, parapetSlabColor, parapetSlabSubColor))
+                    turretRoofQueue.append((pos.x+(wallThickness+1), wallY+turretHeight+4, pos.z-(wallThickness+1)+j, parapetSlabColor, parapetSlabSubColor))
+                    
+                    #turretRoofQueue.append((pos.x+(wallThickness+1)+j, wallY+turretHeight+4, pos.z-(wallThickness+1), parapetSlabColor, parapetSlabSubColor))
+                    #turretRoofQueue.append((pos.x+(wallThickness+1)+j, wallY+turretHeight+4, pos.z+(wallThickness+1), parapetSlabColor, parapetSlabSubColor))
+                    #turretRoofQueue.append((pos.x-(wallThickness+1)+j, wallY+turretHeight+4, pos.z-(wallThickness+1), parapetSlabColor, parapetSlabSubColor))
+                    #turretRoofQueue.append((pos.x-(wallThickness+1)+j, wallY+turretHeight+4, pos.z+(wallThickness+1), parapetSlabColor, parapetSlabSubColor))
             # ladder
             turretRoofQueue.append((pos.x+(wallThickness//2+1), wallY+2, pos.z+(wallThickness//2+1), pos.x+(wallThickness//2+1), wallY+3+turretHeight, pos.z+(wallThickness//2+1), block.LADDER))
         
@@ -540,72 +549,91 @@ for i in range(len(data['path'])):
         turretRoofQueue.append((pos.x+(wallThickness), wallY+turretHeight+1, pos.z+(wallThickness+1), decorativeTurretStairColor, 4))        
         
     elif (step['cmd'] == 'gate'):
+        gateSize, state = splitList(argv)
         if (heading == 0 or heading == 180): # north or south
             if (heading == 180): # heading south, increment position first
-                pos.z += argv
+                pos.z += gateSize
             # clear the entryway of debris
-            gateQueue.append((pos.x-(wallThickness//2), wallY-3, pos.z-(wallThickness//2+1), pos.x+(wallThickness//2), mc.getHeight(pos.x+(wallThickness//2), pos.z-argv+(wallThickness//2*2)), pos.z-argv+(wallThickness//2*2), block.AIR)) 
+            gateQueue.append((pos.x-(wallThickness//2), wallY-3, pos.z-(wallThickness//2+1), pos.x+(wallThickness//2), mc.getHeight(pos.x+(wallThickness//2), pos.z-gateSize+(wallThickness//2*2)), pos.z-argv+(wallThickness//2*2), block.AIR)) 
             
             # 4 posts
             gateQueue.append((pos.x-1, mc.getHeight(pos.x-1, pos.z-(wallThickness//2+1)), pos.z-(wallThickness//2+1), pos.x-2, wallY-1, pos.z-(wallThickness//2+1), gateWallColor, gateWallSubColor))
             gateQueue.append((pos.x+1, mc.getHeight(pos.x-1, pos.z-(wallThickness//2+1)), pos.z-(wallThickness//2+1), pos.x+2, wallY-1, pos.z-(wallThickness//2+1), gateWallColor, gateWallSubColor))
-            gateQueue.append((pos.x-1, mc.getHeight(pos.x-1, pos.z-argv+(wallThickness//2*2)), pos.z-argv+(wallThickness//2*2), pos.x-2, wallY-1, pos.z-argv+(wallThickness//2*2), gateWallColor, gateWallSubColor))
-            gateQueue.append((pos.x+1, mc.getHeight(pos.x-1, pos.z-argv+(wallThickness//2*2)), pos.z-argv+(wallThickness//2*2), pos.x+2, wallY-1, pos.z-argv+(wallThickness//2*2), gateWallColor, gateWallSubColor))
+            gateQueue.append((pos.x-1, mc.getHeight(pos.x-1, pos.z-gateSize+(wallThickness//2*2)), pos.z-gateSize+(wallThickness//2*2), pos.x-2, wallY-1, pos.z-gateSize+(wallThickness//2*2), gateWallColor, gateWallSubColor))
+            gateQueue.append((pos.x+1, mc.getHeight(pos.x-1, pos.z-gateSize+(wallThickness//2*2)), pos.z-gateSize+(wallThickness//2*2), pos.x+2, wallY-1, pos.z-gateSize+(wallThickness//2*2), gateWallColor, gateWallSubColor))
+            
+            # torches
+            # for j in range(5):
+            #     if (j == 2):
+            #         continue
+            #     gateQueue.append((pos.x-2+j, mc.getHeight(pos.x-2+j, pos.z-(wallThickness//2)), pos.z-(wallThickness//2), block.TORCH)) # south row of torches
+            #     gateQueue.append((pos.x-2+j, mc.getHeight(pos.x-2+j, pos.z-gateSize+(wallThickness//2*2)+1), pos.z-gateSize+(wallThickness//2*2)+1, block.TORCH)) # north row of torches
             
             # top plate
-            gateQueue.append((pos.x-2, wallY, pos.z-(wallThickness//2+1), pos.x+2, wallY+3, pos.z-argv+(wallThickness//2*2), gateWallColor, gateWallSubColor))
+            gateQueue.append((pos.x-2, wallY, pos.z-(wallThickness//2+1), pos.x+2, wallY+3, pos.z-gateSize+(wallThickness//2*2), gateWallColor, gateWallSubColor))
             
             # bottom plate
-            gateQueue.append((pos.x-2, mc.getHeight(pos.x, pos.z)-1, pos.z-(wallThickness//2+1), pos.x+2, mc.getHeight(pos.x, pos.z)-1, pos.z-argv+(wallThickness//2*2), gateFloorColor, gateFloorSubColor))
+            gateQueue.append((pos.x-2, mc.getHeight(pos.x, pos.z)-1, pos.z-(wallThickness//2+1), pos.x+2, mc.getHeight(pos.x, pos.z)-1, pos.z-gateSize+(wallThickness//2*2), gateFloorColor, gateFloorSubColor))
             
             # front plate
-            gateQueue.append((pos.x-3, wallY+1, pos.z-(wallThickness//2), pos.x-3, wallY+2, pos.z-argv+(wallThickness//2*2-1), gateWallColor, gateWallSubColor))
+            gateQueue.append((pos.x-3, wallY+1, pos.z-(wallThickness//2), pos.x-3, wallY+2, pos.z-gateSize+(wallThickness//2*2-1), gateWallColor, gateWallSubColor))
             
             # back plate
-            gateQueue.append((pos.x+3, wallY+1, pos.z-(wallThickness//2), pos.x+3, wallY+2, pos.z-argv+(wallThickness//2*2-1), gateWallColor, gateWallSubColor))
+            gateQueue.append((pos.x+3, wallY+1, pos.z-(wallThickness//2), pos.x+3, wallY+2, pos.z-gateSize+(wallThickness//2*2-1), gateWallColor, gateWallSubColor))
             
             # decoratoive upsidedown stair blocks
             gateQueue.append((pos.x-2, wallY-1, pos.z-(wallThickness//2+2), pos.x+2, wallY-1, pos.z-(wallThickness//2+2), decorativeStairColor, 6))
-            gateQueue.append((pos.x-2, wallY-1, pos.z-argv+(wallThickness//2*2+1), pos.x+2, wallY-1, pos.z-argv+(wallThickness//2*2+1), decorativeStairColor, 7))
+            gateQueue.append((pos.x-2, wallY-1, pos.z-gateSize+(wallThickness//2*2+1), pos.x+2, wallY-1, pos.z-gateSize+(wallThickness//2*2+1), decorativeStairColor, 7))
             
             # build the fence post gate
-            gateQueue.append((pos.x, wallY, pos.z-(wallThickness//2+1), pos.x, wallY-2, pos.z-argv+(wallThickness//2*2), gateColor, gateSubColor))
-            
+            if (state == "open"):
+                gateQueue.append((pos.x, wallY, pos.z-(wallThickness//2+1), pos.x, wallY-2, pos.z-gateSize+(wallThickness//2*2), gateColor, gateSubColor))
+            elif (state == "closed"):
+                gateQueue.append((pos.x, wallY, pos.z-(wallThickness//2+1), pos.x, mc.getHeight(pos.x, pos.z), pos.z-gateSize+(wallThickness//2*2), gateColor, gateSubColor))
             if (heading == 0): # heading north, increment position after drawing
-                pos.z -= argv
+                pos.z -= gateSize
         elif (heading == 90 or heading == 270): # east or west
             if (heading == 90): # heading south, increment position first
-                pos.x += argv
+                pos.x += gateSize
             # clear the entryway of debris
-            gateQueue.append((pos.x-(wallThickness//2+1), wallY-3, pos.z-(wallThickness//2), pos.x-argv+(wallThickness//2*2), mc.getHeight(pos.x-argv+(wallThickness//2*2), pos.z+(wallThickness//2)), pos.z+(wallThickness//2), block.AIR)) 
+            gateQueue.append((pos.x-(wallThickness//2+1), wallY-3, pos.z-(wallThickness//2), pos.x-gateSize+(wallThickness//2*2), mc.getHeight(pos.x-gateSize+(wallThickness//2*2), pos.z+(wallThickness//2)), pos.z+(wallThickness//2), block.AIR)) 
             
             # 4 posts
             gateQueue.append((pos.x-(wallThickness//2+1), mc.getHeight(pos.x-(wallThickness//2+1), pos.z-1), pos.z-1, pos.x-(wallThickness//2+1), wallY-1, pos.z-2, gateWallColor, gateWallSubColor))
             gateQueue.append((pos.x-(wallThickness//2+1), mc.getHeight(pos.x-(wallThickness//2+1), pos.z-1), pos.z+1, pos.x-(wallThickness//2+1), wallY-1, pos.z+2, gateWallColor, gateWallSubColor))
-            gateQueue.append((pos.x-argv+(wallThickness//2*2), mc.getHeight(pos.x-argv+(wallThickness//2*2), pos.z-1), pos.z-1, pos.x-argv+(wallThickness//2*2), wallY-1, pos.z-2, gateWallColor, gateWallSubColor))
-            gateQueue.append((pos.x-argv+(wallThickness//2*2), mc.getHeight(pos.x-argv+(wallThickness//2*2), pos.z-1), pos.z+1, pos.x-argv+(wallThickness//2*2), wallY-1, pos.z+2, gateWallColor, gateWallSubColor))
+            gateQueue.append((pos.x-gateSize+(wallThickness//2*2), mc.getHeight(pos.x-gateSize+(wallThickness//2*2), pos.z-1), pos.z-1, pos.x-gateSize+(wallThickness//2*2), wallY-1, pos.z-2, gateWallColor, gateWallSubColor))
+            gateQueue.append((pos.x-gateSize+(wallThickness//2*2), mc.getHeight(pos.x-gateSize+(wallThickness//2*2), pos.z-1), pos.z+1, pos.x-gateSize+(wallThickness//2*2), wallY-1, pos.z+2, gateWallColor, gateWallSubColor))
             
+            # torches
+            # for j in range(5):
+            #     if (j == 2):
+            #         continue
+            #     gateQueue.append((pos.x-(wallThickness//2)-2, mc.getHeight(pos.x-(wallThickness//2)-2, pos.z-2+j)+2, pos.z-2+j, block.TORCH)) # east of torches
+            #     gateQueue.append((pos.x-gateSize+(wallThickness//2*2)+1, mc.getHeight(pos.x-gateSize+(wallThickness//2*2)+1, pos.z-2+j)+2, pos.z-2+j, block.TORCH)) # west row of torches
+
             # top plate
-            gateQueue.append((pos.x-(wallThickness//2+1), wallY, pos.z-2, pos.x-argv+(wallThickness//2*2), wallY+3, pos.z+2, gateWallColor, gateWallSubColor))
+            gateQueue.append((pos.x-(wallThickness//2+1), wallY, pos.z-2, pos.x-gateSize+(wallThickness//2*2), wallY+3, pos.z+2, gateWallColor, gateWallSubColor))
             
             # bottom plate
-            gateQueue.append((pos.x-(wallThickness//2+1), mc.getHeight(pos.x, pos.z)-1, pos.z-2, pos.x-argv+(wallThickness//2*2), mc.getHeight(pos.x, pos.z)-1, pos.z+2, gateFloorColor, gateFloorSubColor))
+            gateQueue.append((pos.x-(wallThickness//2+1), mc.getHeight(pos.x, pos.z)-1, pos.z-2, pos.x-gateSize+(wallThickness//2*2), mc.getHeight(pos.x, pos.z)-1, pos.z+2, gateFloorColor, gateFloorSubColor))
             
             # front plate
-            gateQueue.append((pos.x-(wallThickness//2), wallY+1, pos.z-3, pos.x-argv+(wallThickness//2*2-1), wallY+2, pos.z-3, gateWallColor, gateWallSubColor))
+            gateQueue.append((pos.x-(wallThickness//2), wallY+1, pos.z-3, pos.x-gateSize+(wallThickness//2*2-1), wallY+2, pos.z-3, gateWallColor, gateWallSubColor))
             
             # back plate
-            gateQueue.append((pos.x-(wallThickness//2), wallY+1, pos.z+3, pos.x-argv+(wallThickness//2*2-1), wallY+2, pos.z+3, gateWallColor, gateWallSubColor))
+            gateQueue.append((pos.x-(wallThickness//2), wallY+1, pos.z+3, pos.x-gateSize+(wallThickness//2*2-1), wallY+2, pos.z+3, gateWallColor, gateWallSubColor))
             
             # decoratoive upsidedown stair blocks
             gateQueue.append((pos.x-(wallThickness//2+2), wallY-1, pos.z-2, pos.x-(wallThickness//2+2), wallY-1, pos.z+2, decorativeStairColor, 4))
-            gateQueue.append((pos.x-argv+(wallThickness//2*2+1), wallY-1, pos.z-2, pos.x-argv+(wallThickness//2*2+1), wallY-1, pos.z+2, decorativeStairColor, 5))
+            gateQueue.append((pos.x-gateSize+(wallThickness//2*2+1), wallY-1, pos.z-2, pos.x-gateSize+(wallThickness//2*2+1), wallY-1, pos.z+2, decorativeStairColor, 5))
             
             # build the fence post gate
-            gateQueue.append((pos.x-(wallThickness//2+1), wallY, pos.z, pos.x-argv+(wallThickness//2*2), wallY-2, pos.z, gateColor, gateSubColor))
-            
+            if (state == "open"):
+                gateQueue.append((pos.x-(wallThickness//2+1), wallY, pos.z, pos.x-gateSize+(wallThickness//2*2), wallY-2, pos.z, gateColor, gateSubColor))
+            elif (state == "closed"):
+                gateQueue.append((pos.x-(wallThickness//2+1), wallY, pos.z, pos.x-gateSize+(wallThickness//2*2), mc.getHeight(pos.x, pos.z), pos.z, gateColor, gateSubColor))
             if (heading == 270): # heading west, increment position after drawing
-                pos.x-= argv
+                pos.x-= gateSize
                 
     elif (step['cmd'] == "jump"):
         if (heading == 0): # north

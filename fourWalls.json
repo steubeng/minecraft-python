@@ -19,6 +19,7 @@
 		"decorativeStairColor": 109,
 		"decorativeTurretStairColor": 180,
 		"parapetColor": [98, 3],
+		"parapetSlabColor": [44, 5],
 		"awningColor": [126, 4],
 		"awningSupportColor": 192,
 		"awningBaseColor": [179, 1]
@@ -32,7 +33,7 @@
 		{"cmd": "move", "argv": 9},
 		{"cmd": "cannon", "argv": "left"},
 		{"cmd": "move", "argv": 5},
-		{"cmd": "gate", "argv": 11},
+		{"cmd": "gate", "argv": [11, "open"]},
 		{"cmd": "move", "argv": 5},
 		{"cmd": "cannon", "argv": "left"},
 		{"cmd": "move", "argv": 9},
