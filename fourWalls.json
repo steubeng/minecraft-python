@@ -2,7 +2,7 @@
 	"config": {
 		"minWallHeight": 4,
 		"maxWallHeight": 8,
-		"initialHeading": 0,
+		"initialHeading": 90,
 		"wallThickness": 3,
 		"allure": true,
 		"parapet": true

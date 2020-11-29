@@ -4,7 +4,6 @@
 # TODO: vary height of gate above the wallY
 # TODO: parapet continues above gate
 # TODO: custom getHeight function
-# TODO: torches by gates (may not be possible to add torches to walls only to floors)
 # TODO: add ladder from allure to ground (similar to cannon)
 
 
@@ -557,12 +556,15 @@ for i in range(len(data['path'])):
             gateQueue.append((pos.x+1, mc.getHeight(pos.x-1, pos.z-gateSize+(wallThickness//2*2)), pos.z-gateSize+(wallThickness//2*2), pos.x+2, wallY-1, pos.z-gateSize+(wallThickness//2*2), gateWallColor, gateWallSubColor))
             
             # torches
-            # for j in range(5):
-            #     if (j == 2):
-            #         continue
-            #     gateQueue.append((pos.x-2+j, mc.getHeight(pos.x-2+j, pos.z-(wallThickness//2)), pos.z-(wallThickness//2), block.TORCH)) # south row of torches
-            #     gateQueue.append((pos.x-2+j, mc.getHeight(pos.x-2+j, pos.z-gateSize+(wallThickness//2*2)+1), pos.z-gateSize+(wallThickness//2*2)+1, block.TORCH)) # north row of torches
-            
+            gateQueue.append((pos.x-3, mc.getHeight(pos.x-3, pos.z-(wallThickness//2+1)), pos.z-(wallThickness//2+1), awningSupportColor, awningSupportSubColor))
+            gateQueue.append((pos.x-3, mc.getHeight(pos.x-3, pos.z-(wallThickness//2+1))+1, pos.z-(wallThickness//2+1), block.TORCH))
+            gateQueue.append((pos.x-3, mc.getHeight(pos.x-3, pos.z-gateSize+(wallThickness//2*2)), pos.z-gateSize+(wallThickness//2*2), awningSupportColor, awningSupportSubColor))
+            gateQueue.append((pos.x-3, mc.getHeight(pos.x-3, pos.z-gateSize+(wallThickness//2*2))+1, pos.z-gateSize+(wallThickness//2*2), block.TORCH))
+            gateQueue.append((pos.x+3, mc.getHeight(pos.x+3, pos.z-(wallThickness//2+1)), pos.z-(wallThickness//2+1), awningSupportColor, awningSupportSubColor))
+            gateQueue.append((pos.x+3, mc.getHeight(pos.x+3, pos.z-(wallThickness//2+1))+1, pos.z-(wallThickness//2+1), block.TORCH))
+            gateQueue.append((pos.x+3, mc.getHeight(pos.x+3, pos.z-gateSize+(wallThickness//2*2)), pos.z-gateSize+(wallThickness//2*2), awningSupportColor, awningSupportSubColor))
+            gateQueue.append((pos.x+3, mc.getHeight(pos.x+3, pos.z-gateSize+(wallThickness//2*2))+1, pos.z-gateSize+(wallThickness//2*2), block.TORCH))
+
             # top plate
             gateQueue.append((pos.x-2, wallY, pos.z-(wallThickness//2+1), pos.x+2, wallY+3, pos.z-gateSize+(wallThickness//2*2), gateWallColor, gateWallSubColor))
             
@@ -599,11 +601,14 @@ for i in range(len(data['path'])):
             gateQueue.append((pos.x-gateSize+(wallThickness//2*2), mc.getHeight(pos.x-gateSize+(wallThickness//2*2), pos.z-1), pos.z+1, pos.x-gateSize+(wallThickness//2*2), wallY-1, pos.z+2, gateWallColor, gateWallSubColor))
             
             # torches
-            # for j in range(5):
-            #     if (j == 2):
-            #         continue
-            #     gateQueue.append((pos.x-(wallThickness//2)-2, mc.getHeight(pos.x-(wallThickness//2)-2, pos.z-2+j)+2, pos.z-2+j, block.TORCH)) # east of torches
-            #     gateQueue.append((pos.x-gateSize+(wallThickness//2*2)+1, mc.getHeight(pos.x-gateSize+(wallThickness//2*2)+1, pos.z-2+j)+2, pos.z-2+j, block.TORCH)) # west row of torches
+            gateQueue.append((pos.x-(wallThickness//2+1), mc.getHeight(pos.x-(wallThickness//2+1), pos.z-3), pos.z-3, awningSupportColor, awningSupportSubColor))
+            gateQueue.append((pos.x-(wallThickness//2+1), mc.getHeight(pos.x-(wallThickness//2+1), pos.z-3)+1, pos.z-3, block.TORCH))
+            gateQueue.append((pos.x-gateSize+(wallThickness//2*2), mc.getHeight(pos.x-gateSize+(wallThickness//2*2), pos.z-3), pos.z-3, awningSupportColor, awningSupportSubColor))
+            gateQueue.append((pos.x-gateSize+(wallThickness//2*2), mc.getHeight(pos.x-gateSize+(wallThickness//2*2), pos.z-3)+1, pos.z-3, block.TORCH))
+            gateQueue.append((pos.x-(wallThickness//2+1), mc.getHeight(pos.x-(wallThickness//2+1), pos.z+3), pos.z+3, awningSupportColor, awningSupportSubColor))
+            gateQueue.append((pos.x-(wallThickness//2+1), mc.getHeight(pos.x-(wallThickness//2+1), pos.z+3)+1, pos.z+3, block.TORCH))
+            gateQueue.append((pos.x-gateSize+(wallThickness//2*2), mc.getHeight(pos.x-gateSize+(wallThickness//2*2), pos.z+3), pos.z+3, awningSupportColor, awningSupportSubColor))
+            gateQueue.append((pos.x-gateSize+(wallThickness//2*2), mc.getHeight(pos.x-gateSize+(wallThickness//2*2), pos.z+3)+1, pos.z+3, block.TORCH))
 
             # top plate
             gateQueue.append((pos.x-(wallThickness//2+1), wallY, pos.z-2, pos.x-gateSize+(wallThickness//2*2), wallY+3, pos.z+2, gateWallColor, gateWallSubColor))
