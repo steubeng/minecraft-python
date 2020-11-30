@@ -48,6 +48,7 @@ awningColor, awningSubColor = splitList(color['awningColor'])
 awningSupportColor, awningSupportSubColor = splitList(color['awningSupportColor'])
 awningBaseColor, awningBaseSubColor = splitList(color['awningBaseColor'])
 decorativeTurretStairColor, decorativeTurretStairSubColor = splitList(color['decorativeTurretStairColor'])
+ladderSupportColor, ladderSupportSubColor = splitList(color['ladderSupportColor'])
 
 # config
 minWallHeight = config['minWallHeight']
@@ -67,6 +68,7 @@ turretQueue = deque([])
 turretRoofQueue = deque([])
 gateQueue = deque([])
 cannonQueue = deque([])
+ladderQueue = deque([])
 
 # mcpi setup and initialization
 mc = Minecraft.create()
@@ -648,9 +650,9 @@ for i in range(len(data['path'])):
     elif (step['cmd'] == 'cannon'):
         cannonHeading = 0
         if (argv == "right"):
-            cannonHeading = heading + 90
+            cannonHeading = (heading + 90) % 360
         elif (argv == "left"):
-            cannonHeading = heading - 90
+            cannonHeading = (heading - 90) % 360
         if (cannonHeading == 0):
             y = mc.getHeight(pos.x, pos.z)
             # clear the parapet from the area
@@ -747,6 +749,34 @@ for i in range(len(data['path'])):
 
             # finally, the cannon!
             cannon(pos.x-5, wallY+2, pos.z, cannonHeading)
+            
+    elif (step['cmd'] == 'ladder'):
+        ladderHeading = 0
+        if (argv == "right"):
+            ladderHeading = (heading + 90) % 360
+        elif (argv == "left"):
+            ladderHeading = (heading - 90) % 360
+        if (ladderHeading == 0):
+            ladderQueue.append((pos.x, mc.getHeight(pos.x, pos.z-(wallThickness//2+1)), pos.z-(wallThickness//2+1), pos.x, wallY+1, pos.z-(wallThickness//2+1), ladderSupportColor, ladderSupportSubColor))
+            ladderQueue.append((pos.x, mc.getHeight(pos.x, pos.z-(wallThickness//2+2)), pos.z-(wallThickness//2+2), pos.x, wallY+1, pos.z-(wallThickness//2+2), block.LADDER, 6))
+            ladderQueue.append((pos.x, wallY+2, pos.z-(wallThickness//2+1), pos.x, wallY+3, pos.z-(wallThickness//2+1), block.AIR))
+        elif (ladderHeading == 90):
+            ladderQueue.append((pos.x+(wallThickness//2+1), mc.getHeight(pos.x+(wallThickness//2+1), pos.z), pos.z, pos.x+(wallThickness//2+1), wallY+1, pos.z, ladderSupportColor, ladderSupportSubColor))
+            ladderQueue.append((pos.x+(wallThickness//2+2), mc.getHeight(pos.x+(wallThickness//2+2), pos.z), pos.z, pos.x+(wallThickness//2+2), wallY+1, pos.z, block.LADDER, 5))
+            ladderQueue.append((pos.x+(wallThickness//2+1), wallY+2, pos.z, pos.x+(wallThickness//2+1), wallY+3, pos.z, block.AIR))
+        elif (ladderHeading == 180):
+            ladderQueue.append((pos.x, mc.getHeight(pos.x, pos.z+(wallThickness//2+1)), pos.z+(wallThickness//2+1), pos.x, wallY+1, pos.z+(wallThickness//2+1), ladderSupportColor, ladderSupportSubColor))
+            ladderQueue.append((pos.x, mc.getHeight(pos.x, pos.z+(wallThickness//2+2)), pos.z+(wallThickness//2+2), pos.x, wallY+1, pos.z+(wallThickness//2+2), block.LADDER, 3))
+            ladderQueue.append((pos.x, wallY+2, pos.z+(wallThickness//2+1), pos.x, wallY+3, pos.z+(wallThickness//2+1), block.AIR))
+        elif (ladderHeading == 270):
+            ladderQueue.append((pos.x-(wallThickness//2+1), mc.getHeight(pos.x-(wallThickness//2+1), pos.z), pos.z, pos.x-(wallThickness//2+1), wallY+1, pos.z, ladderSupportColor, ladderSupportSubColor))
+            ladderQueue.append((pos.x-(wallThickness//2+2), mc.getHeight(pos.x-(wallThickness//2+2), pos.z), pos.z, pos.x-(wallThickness//2+2), wallY+1, pos.z, block.LADDER, 4))
+            ladderQueue.append((pos.x-(wallThickness//2+1), wallY+2, pos.z, pos.x-(wallThickness//2+1), wallY+3, pos.z, block.AIR))
+        
+        
+    else:
+        print('Unknown command:', cmd, 'with argument:', argv)
+        
     prevCmd = step['cmd']    
 
 
@@ -767,5 +797,9 @@ processSetBlocksQueue(gateQueue)
 
 print('processing cannonQueue')
 processSetBlocksQueue(cannonQueue)
+
+print('processing ladderQueue')
+processSetBlocksQueue(ladderQueue)
+
 # print('processing debugQueue')
 # processSetBlocksQueue(debugQueue)

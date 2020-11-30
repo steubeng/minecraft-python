@@ -2,7 +2,7 @@
 	"config": {
 		"minWallHeight": 4,
 		"maxWallHeight": 8,
-		"initialHeading": 90,
+		"initialHeading": 0,
 		"wallThickness": 3,
 		"allure": true,
 		"parapet": true
@@ -22,7 +22,8 @@
 		"parapetSlabColor": [44, 5],
 		"awningColor": [126, 4],
 		"awningSupportColor": 192,
-		"awningBaseColor": [179, 1]
+		"awningBaseColor": [179, 1],
+		"ladderSupportColor": [17, 1]
 		},
 	"path": [
 		{"cmd": "move", "argv": 15},
@@ -46,6 +47,7 @@
 		{"cmd": "turret", "argv": [18, "flat"]},
 		{"cmd": "move", "argv": 19},
 		{"cmd": "cannon", "argv": "left"},
+		{"cmd": "ladder", "argv": "right"},
 		{"cmd": "move", "argv": 18},
 		{"cmd": "right", "argv": 90},
 		{"cmd": "turret", "argv": [16, "flat"]}
