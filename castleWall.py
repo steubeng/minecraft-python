@@ -4,8 +4,6 @@
 # TODO: vary height of gate above the wallY
 # TODO: parapet continues above gate
 # TODO: custom getHeight function
-# TODO: add ladder from allure to ground (similar to cannon)
-
 
 from mcpi.minecraft import Minecraft
 from mcpi.vec3 import Vec3
