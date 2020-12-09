@@ -48,6 +48,9 @@ awningBaseColor, awningBaseSubColor = splitList(color['awningBaseColor'])
 decorativeTurretStairColor, decorativeTurretStairSubColor = splitList(color['decorativeTurretStairColor'])
 ladderSupportColor, ladderSupportSubColor = splitList(color['ladderSupportColor'])
 
+# constants
+BLOCK_LADDER = 65
+
 # config
 minWallHeight = config['minWallHeight']
 maxWallHeight = config['maxWallHeight']
@@ -543,6 +546,8 @@ for i in range(len(data['path'])):
         
     elif (step['cmd'] == 'gate'):
         gateSize, state = splitList(argv)
+        if (state == ""):
+            state = "open"
         if (heading == 0 or heading == 180): # north or south
             if (heading == 180): # heading south, increment position first
                 pos.z += gateSize
@@ -754,23 +759,27 @@ for i in range(len(data['path'])):
             ladderHeading = (heading + 90) % 360
         elif (argv == "left"):
             ladderHeading = (heading - 90) % 360
-        if (ladderHeading == 0):
+        ladderFacing = -1
+        if (ladderHeading == 0): # ok
+            ladderFacing = 6
             ladderQueue.append((pos.x, mc.getHeight(pos.x, pos.z-(wallThickness//2+1)), pos.z-(wallThickness//2+1), pos.x, wallY+1, pos.z-(wallThickness//2+1), ladderSupportColor, ladderSupportSubColor))
-            ladderQueue.append((pos.x, mc.getHeight(pos.x, pos.z-(wallThickness//2+2)), pos.z-(wallThickness//2+2), pos.x, wallY+1, pos.z-(wallThickness//2+2), block.LADDER, 6))
+            ladderQueue.append((pos.x, mc.getHeight(pos.x, pos.z-(wallThickness//2+2)), pos.z-(wallThickness//2+2), pos.x, wallY+1, pos.z-(wallThickness//2+2), BLOCK_LADDER, ladderFacing))
             ladderQueue.append((pos.x, wallY+2, pos.z-(wallThickness//2+1), pos.x, wallY+3, pos.z-(wallThickness//2+1), block.AIR))
         elif (ladderHeading == 90):
+            ladderFacing = 5
             ladderQueue.append((pos.x+(wallThickness//2+1), mc.getHeight(pos.x+(wallThickness//2+1), pos.z), pos.z, pos.x+(wallThickness//2+1), wallY+1, pos.z, ladderSupportColor, ladderSupportSubColor))
-            ladderQueue.append((pos.x+(wallThickness//2+2), mc.getHeight(pos.x+(wallThickness//2+2), pos.z), pos.z, pos.x+(wallThickness//2+2), wallY+1, pos.z, block.LADDER, 5))
+            ladderQueue.append((pos.x+(wallThickness//2+2), mc.getHeight(pos.x+(wallThickness//2+2), pos.z), pos.z, pos.x+(wallThickness//2+2), wallY+1, pos.z, BLOCK_LADDER, ladderFacing))
             ladderQueue.append((pos.x+(wallThickness//2+1), wallY+2, pos.z, pos.x+(wallThickness//2+1), wallY+3, pos.z, block.AIR))
         elif (ladderHeading == 180):
+            ladderFacing = 3
             ladderQueue.append((pos.x, mc.getHeight(pos.x, pos.z+(wallThickness//2+1)), pos.z+(wallThickness//2+1), pos.x, wallY+1, pos.z+(wallThickness//2+1), ladderSupportColor, ladderSupportSubColor))
-            ladderQueue.append((pos.x, mc.getHeight(pos.x, pos.z+(wallThickness//2+2)), pos.z+(wallThickness//2+2), pos.x, wallY+1, pos.z+(wallThickness//2+2), block.LADDER, 3))
+            ladderQueue.append((pos.x, mc.getHeight(pos.x, pos.z+(wallThickness//2+2)), pos.z+(wallThickness//2+2), pos.x, wallY+1, pos.z+(wallThickness//2+2), BLOCK_LADDER, ladderFacing))
             ladderQueue.append((pos.x, wallY+2, pos.z+(wallThickness//2+1), pos.x, wallY+3, pos.z+(wallThickness//2+1), block.AIR))
         elif (ladderHeading == 270):
+            ladderFacing = 4
             ladderQueue.append((pos.x-(wallThickness//2+1), mc.getHeight(pos.x-(wallThickness//2+1), pos.z), pos.z, pos.x-(wallThickness//2+1), wallY+1, pos.z, ladderSupportColor, ladderSupportSubColor))
-            ladderQueue.append((pos.x-(wallThickness//2+2), mc.getHeight(pos.x-(wallThickness//2+2), pos.z), pos.z, pos.x-(wallThickness//2+2), wallY+1, pos.z, block.LADDER, 4))
+            ladderQueue.append((pos.x-(wallThickness//2+2), mc.getHeight(pos.x-(wallThickness//2+2), pos.z), pos.z, pos.x-(wallThickness//2+2), wallY+1, pos.z, BLOCK_LADDER, ladderFacing))
             ladderQueue.append((pos.x-(wallThickness//2+1), wallY+2, pos.z, pos.x-(wallThickness//2+1), wallY+3, pos.z, block.AIR))
-        
         
     else:
         print('Unknown command:', cmd, 'with argument:', argv)

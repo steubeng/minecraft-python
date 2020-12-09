@@ -22,7 +22,8 @@
 		"parapetSlabColor": [44, 5],
 		"awningColor": [126, 4],
 		"awningSupportColor": 192,
-		"awningBaseColor": [179, 1]
+		"awningBaseColor": [179, 1],
+		"ladderSupportColor": [17, 1]
 		},
 	"path": [
 		{"cmd": "move", "argv": 19},
