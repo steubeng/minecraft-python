@@ -2,22 +2,29 @@
 	"config": {
 		"minWallHeight": 4,
 		"maxWallHeight": 8,
-		"initialHeading": 90,
+		"initialHeading": 0,
 		"wallThickness": 3,
 		"allure": true,
-		"parapet": true
+		"parapet": true,
+		"pedestal": true
 		},
 	"color": {
-		"wallColor": [48],
+		"wallColor": [179, 1],
 		"allureColor": [98],
 		"turretColor": [98],
-		"turretWindowColor": [160, 9],
-		"turretRoofColor": [48],
+		"turretWindowColor": [192],
+		"turretRoofColor": [179, 1],
 		"gateColor": [113],
 		"gateWallColor": [98],
 		"gateFloorColor": [4],
 		"decorativeStairColor": 109,
-		"parapetColor": [98, 3]
+		"decorativeTurretStairColor": 180,
+		"parapetColor": [98, 3],
+		"parapetSlabColor": [44, 5],
+		"awningColor": [126, 4],
+		"awningSupportColor": 192,
+		"awningBaseColor": [179, 1],
+		"ladderSupportColor": [17, 1]
 		},
 	"path": [
 		{"cmd": "move", "argv": 8},

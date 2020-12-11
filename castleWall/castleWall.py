@@ -11,6 +11,7 @@ from mcpi import block
 import sys
 import json
 from collections import deque
+import copy
 
 def splitList(myList):
     if (type(myList) is list):
@@ -50,12 +51,15 @@ ladderSupportColor, ladderSupportSubColor = splitList(color['ladderSupportColor'
 
 # constants
 BLOCK_LADDER = 65
+PEDESTAL_PADDING = 6
+PEDESTAL_HEIGHT = 3
 
 # config
 minWallHeight = config['minWallHeight']
 maxWallHeight = config['maxWallHeight']
 wallThickness = config['wallThickness']
 allure = config['allure']
+pedestal = config['pedestal']
 parapet = config['parapet'] and allure
 heading = config['initialHeading']
 prevHeading = heading
@@ -74,8 +78,8 @@ ladderQueue = deque([])
 # mcpi setup and initialization
 mc = Minecraft.create()
 mc.postToChat("Castle Wall!")
-pos = mc.player.getPos()
-wallY = mc.getHeight(pos.x, pos.z) + (maxWallHeight + minWallHeight) / 2
+initialPos = mc.player.getPos()
+pos = copy.copy(initialPos)
 
 def cannon(x, y, z, heading, type=2):
     if (type == 1):
@@ -183,7 +187,165 @@ def processSetBlocksQueue(queue):
         else:
             print('something weird happened, len(tuple):', len(tuple))
 
+maxX = pos.x
+minX = pos.x
+maxZ = pos.z
+minZ = pos.z
+maxY = 0
+minY = 256
 
+if (pedestal):
+    mc.postToChat('Creating pedestal')
+    print('Creating pedestal')
+    for i in range(len(data['path'])):
+        step = data['path'][i]
+        argv = step['argv']
+        
+        ### move
+        if (step['cmd'] == 'move'):
+            if (heading == 0): # north
+                for z in range(argv):
+                    if (z == 0): # first one
+                        pos.z -= 1
+                    elif (z == argv - 1): # last one
+                        pass
+                    else: # everything else
+                        pos.z -= 1         
+                    if (pos.z > maxZ):
+                        maxZ = pos.z
+                    if (pos.z < minZ):
+                        minZ = pos.z
+                    groundHeight = mc.getHeight(pos.x, pos.z)
+                    if (groundHeight > maxY):
+                        maxY = groundHeight
+                    if (groundHeight < minY):
+                        minY = groundHeight
+                            
+            elif (heading == 90): # east
+                for x in range(argv):
+                    if (x == 0): # first one
+                        pos.x += 1
+                    elif (x == argv - 1): # last one
+                        pass
+                    else: # everything else
+                        pos.x += 1
+                    if (pos.x > maxX):
+                        maxX = pos.x
+                    if (pos.x < minX):
+                        minX = pos.x
+                    groundHeight = mc.getHeight(pos.x, pos.z)
+                    if (groundHeight > maxY):
+                        maxY = groundHeight
+                    if (groundHeight < minY):
+                        minY = groundHeight
+
+            elif (heading == 180): # south
+                for z in range(argv):
+                    if (z == 0): # first one
+                        pos.z += 1
+                    elif (z == argv - 1): # last one
+                        pass
+                    else: # everything else
+                        pos.z += 1
+                    if (pos.z > maxZ):
+                        maxZ = pos.z
+                    if (pos.z < minZ):
+                        minZ = pos.z
+                    groundHeight = mc.getHeight(pos.x, pos.z)
+                    if (groundHeight > maxY):
+                        maxY = groundHeight
+                    if (groundHeight < minY):
+                        minY = groundHeight
+
+            elif (heading == 270): # west
+                for x in range(argv):
+                    if (x == 0): # first one
+                        pos.x -= 1
+                    elif (x == argv - 1): # last one
+                        pass
+                    else: # everything else
+                        pos.x -= 1
+                    if (pos.x > maxX):
+                        maxX = pos.x
+                    if (pos.x < minX):
+                        minX = pos.x
+                    groundHeight = mc.getHeight(pos.x, pos.z)
+                    if (groundHeight > maxY):
+                        maxY = groundHeight
+                    if (groundHeight < minY):
+                        minY = groundHeight
+
+        ### turn left
+        elif (step['cmd'] == 'left'):
+            heading = (heading - argv + 360) % 360
+
+        ### turn right
+        elif (step['cmd'] == 'right'):
+            heading = (heading + argv) % 360
+            
+        elif (step['cmd'] == "jump"):
+            if (heading == 0): # north
+                pos.z -= argv
+            elif (heading == 90): # east
+                pos.x += argv
+            elif (heading == 180): # south
+                pos.z += argv
+            elif (heding == 270): # west
+                pos.x -= argv
+            if (pos.x > maxX):
+                maxX = pos.x
+            if (pos.x < minX):
+                minX = pos.x
+            if (pos.z > maxZ):
+                maxZ = pos.z
+            if (pos.z < minZ):
+                minZ = pos.z
+            groundHeight = mc.getHeight(pos.x, pos.z)
+            if (groundHeight > maxY):
+                maxY = groundHeight
+            if (groundHeight < minY):
+                minY = groundHeight
+                
+        elif (step['cmd'] == 'gate'):
+            gateSize, state = splitList(argv)
+            if (heading == 0 or heading == 180): # north or south
+                if (heading == 180): # heading south, increment position first
+                    pos.z += gateSize
+                    if (pos.z > maxZ):
+                        maxZ = pos.z
+                if (heading == 0): # heading north, increment position after drawing
+                    pos.z -= gateSize
+                    if (pos.z < minZ):
+                        minZ = pos.z
+            elif (heading == 90 or heading == 270): # east or west
+                if (heading == 90): # heading south, increment position first
+                    pos.x += gateSize
+                    if (pos.x > maxX):
+                        maxX = pos.x
+                if (heading == 270): # heading west, increment position after drawing
+                    pos.x -= gateSize
+                    if (pos.x < minX):
+                        minX = pos.x
+    
+            
+    minX -= PEDESTAL_PADDING
+    maxX += PEDESTAL_PADDING
+    minY -= PEDESTAL_PADDING
+    maxY += PEDESTAL_HEIGHT
+    minZ -= PEDESTAL_PADDING
+    maxZ += PEDESTAL_PADDING
+    tiers = (maxY - minY) // 2
+    # print('minX:', minX, ', maxX:', maxX, ', minY:', minY, ', maxY:', maxY, ', minZ:', minZ, 'maxZ:', maxZ, ', tiers:', tiers)
+    # mc.setBlocks(minX-tiers, minY-2*tiers, minZ-tiers, maxX+tiers, 80, maxZ+tiers, 2)
+    for i in range(tiers):
+        mc.setBlocks(minX-i, maxY-(2*i), minZ-i, maxX+i, maxY-(2*i)-1, maxZ+i, 1)
+
+pos = copy.copy(initialPos)
+if (pedestal):
+    pos.y = maxY + 1
+wallY = mc.getHeight(pos.x, pos.z) + (maxWallHeight + minWallHeight) / 2
+heading = config['initialHeading']
+prevHeading = heading    
 print('processing path (', len(data['path']), 'steps )')
 for i in range(len(data['path'])):
     step = data['path'][i]
@@ -637,7 +799,7 @@ for i in range(len(data['path'])):
             elif (state == "closed"):
                 gateQueue.append((pos.x-(wallThickness//2+1), wallY, pos.z, pos.x-gateSize+(wallThickness//2*2), mc.getHeight(pos.x, pos.z), pos.z, gateColor, gateSubColor))
             if (heading == 270): # heading west, increment position after drawing
-                pos.x-= gateSize
+                pos.x -= gateSize
                 
     elif (step['cmd'] == "jump"):
         if (heading == 0): # north
