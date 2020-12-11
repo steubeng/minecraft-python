@@ -307,8 +307,27 @@ if (pedestal):
                 minY = groundHeight
                 
         elif (step['cmd'] == 'gate'):
-            pass
+            gateSize, state = splitList(argv)
+            if (heading == 0 or heading == 180): # north or south
+                if (heading == 180): # heading south, increment position first
+                    pos.z += gateSize
+                    if (pos.z > maxZ):
+                        maxZ = pos.z
+                if (heading == 0): # heading north, increment position after drawing
+                    pos.z -= gateSize
+                    if (pos.z < minZ):
+                        minZ = pos.z
+            elif (heading == 90 or heading == 270): # east or west
+                if (heading == 90): # heading south, increment position first
+                    pos.x += gateSize
+                    if (pos.x > maxX):
+                        maxX = pos.x
+                if (heading == 270): # heading west, increment position after drawing
+                    pos.x -= gateSize
+                    if (pos.x < minX):
+                        minX = pos.x
     
+            
     minX -= PEDESTAL_PADDING
     maxX += PEDESTAL_PADDING
     minY -= PEDESTAL_PADDING
@@ -780,7 +799,7 @@ for i in range(len(data['path'])):
             elif (state == "closed"):
                 gateQueue.append((pos.x-(wallThickness//2+1), wallY, pos.z, pos.x-gateSize+(wallThickness//2*2), mc.getHeight(pos.x, pos.z), pos.z, gateColor, gateSubColor))
             if (heading == 270): # heading west, increment position after drawing
-                pos.x-= gateSize
+                pos.x -= gateSize
                 
     elif (step['cmd'] == "jump"):
         if (heading == 0): # north

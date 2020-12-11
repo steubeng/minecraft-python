@@ -5,7 +5,8 @@
 		"initialHeading": 0,
 		"wallThickness": 3,
 		"allure": true,
-		"parapet": true
+		"parapet": true,
+		"pedestal": true
 		},
 	"color": {
 		"wallColor": [179, 1],
