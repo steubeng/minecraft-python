@@ -48,6 +48,7 @@ awningSupportColor, awningSupportSubColor = splitList(color['awningSupportColor'
 awningBaseColor, awningBaseSubColor = splitList(color['awningBaseColor'])
 decorativeTurretStairColor, decorativeTurretStairSubColor = splitList(color['decorativeTurretStairColor'])
 ladderSupportColor, ladderSupportSubColor = splitList(color['ladderSupportColor'])
+pedestalColor, pedestalSubColor = splitList(color['pedestalColor'])
 
 # constants
 BLOCK_LADDER = 65
@@ -74,6 +75,7 @@ turretRoofQueue = deque([])
 gateQueue = deque([])
 cannonQueue = deque([])
 ladderQueue = deque([])
+pedestalQueue = deque([])
 
 # mcpi setup and initialization
 mc = Minecraft.create()
@@ -196,8 +198,9 @@ minY = 256
 
 if (pedestal):
     mc.postToChat('Creating pedestal')
-    print('Creating pedestal')
+    print('Creating pedestal', end='')
     for i in range(len(data['path'])):
+        print('.', end='')
         step = data['path'][i]
         argv = step['argv']
         
@@ -327,7 +330,7 @@ if (pedestal):
                     if (pos.x < minX):
                         minX = pos.x
     
-            
+    print('')        
     minX -= PEDESTAL_PADDING
     maxX += PEDESTAL_PADDING
     minY -= PEDESTAL_PADDING
@@ -338,7 +341,10 @@ if (pedestal):
     # print('minX:', minX, ', maxX:', maxX, ', minY:', minY, ', maxY:', maxY, ', minZ:', minZ, 'maxZ:', maxZ, ', tiers:', tiers)
     # mc.setBlocks(minX-tiers, minY-2*tiers, minZ-tiers, maxX+tiers, 80, maxZ+tiers, 2)
     for i in range(tiers):
-        mc.setBlocks(minX-i, maxY-(2*i), minZ-i, maxX+i, maxY-(2*i)-1, maxZ+i, 1)
+        pedestalQueue.append((minX-i, maxY-(2*i), minZ-i, maxX+i, maxY-(2*i)-1, maxZ+i, pedestalColor, pedestalSubColor))
+    print('processing pedestalQueue')
+    processSetBlocksQueue(pedestalQueue)
+        
 
 pos = copy.copy(initialPos)
 if (pedestal):

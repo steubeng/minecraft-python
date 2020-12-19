@@ -24,7 +24,8 @@
 		"awningColor": [126, 4],
 		"awningSupportColor": 192,
 		"awningBaseColor": [179, 1],
-		"ladderSupportColor": [17, 1]
+		"ladderSupportColor": [17, 1],
+		"pedestalColor": [2, 0]
 		},
 	"path": [
 		{"cmd": "move", "argv": 15},
@@ -36,7 +37,7 @@
 		{"cmd": "move", "argv": 9},
 		{"cmd": "cannon", "argv": "left"},
 		{"cmd": "ladder", "argv": "right"},
-		{"cmd": "move", "argv": 10},
+		{"cmd": "move", "argv": 12},
 		{"cmd": "cannon", "argv": "left"},
 		{"cmd": "ladder", "argv": "right"},
 		{"cmd": "move", "argv": 9},
@@ -48,10 +49,10 @@
 		{"cmd": "move", "argv": 15},
 		{"cmd": "right", "argv": 90},
 		{"cmd": "turret", "argv": [10, "flat"]},
-		{"cmd": "move", "argv": 19},
+		{"cmd": "move", "argv": 15},
 		{"cmd": "cannon", "argv": "left"},
 		{"cmd": "ladder", "argv": "right"},
-		{"cmd": "move", "argv": 18},
+		{"cmd": "move", "argv": 15},
 		{"cmd": "right", "argv": 90},
 		{"cmd": "turret", "argv": [10, "flat"]}
 	]

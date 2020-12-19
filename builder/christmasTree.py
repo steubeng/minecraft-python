@@ -86,6 +86,106 @@ def house(mc, pos, sizeX, sizeZ):
     frontPorch(mc, pos, sizeX, sizeZ)
     stilts(mc, pos, sizeX, sizeZ)
     
+def christmasTree(mc, pos):
+    print("christmasTree:", pos)
+
+    layer = 0
+    mc.setBlock(pos.x, pos.y+layer, pos.z, 17, 1)
+    
+    layer += 1
+    mc.setBlock(pos.x, pos.y+layer, pos.z, 17, 1)
+    mc.setBlock(pos.x-1, pos.y+layer, pos.z-3, 18, 1)
+    mc.setBlock(pos.x+1, pos.y+layer, pos.z-3, 18, 1)
+    mc.setBlock(pos.x-2, pos.y+layer, pos.z-2, 18, 1)
+    mc.setBlock(pos.x, pos.y+layer, pos.z-2, 18, 1)
+    mc.setBlock(pos.x+2, pos.y+layer, pos.z-2, 18, 1)
+    mc.setBlock(pos.x-3, pos.y+layer, pos.z-1, 18, 1)
+    mc.setBlock(pos.x+3, pos.y+layer, pos.z-1, 18, 1)
+    mc.setBlock(pos.x-2, pos.y+layer, pos.z, 18, 1)
+    mc.setBlock(pos.x+2, pos.y+layer, pos.z, 18, 1)
+    mc.setBlock(pos.x-1, pos.y+layer, pos.z+3, 18, 1)
+    mc.setBlock(pos.x+1, pos.y+layer, pos.z+3, 18, 1)
+    mc.setBlock(pos.x-2, pos.y+layer, pos.z+2, 18, 1)
+    mc.setBlock(pos.x, pos.y+layer, pos.z+2, 18, 1)
+    mc.setBlock(pos.x+2, pos.y+layer, pos.z+2, 18, 1)
+    mc.setBlock(pos.x-3, pos.y+layer, pos.z+1, 18, 1)
+    mc.setBlock(pos.x+3, pos.y+layer, pos.z+1, 18, 1)
+    
+    layer += 1
+    mc.setBlock(pos.x, pos.y+layer, pos.z, 17, 1)
+    mc.setBlock(pos.x-1, pos.y+layer, pos.z-3, 18, 1)
+    mc.setBlock(pos.x, pos.y+layer, pos.z-3, 18, 1)
+    mc.setBlock(pos.x+1, pos.y+layer, pos.z-3, 18, 1)
+    mc.setBlock(pos.x-1, pos.y+layer, pos.z-1, 18, 1)
+    mc.setBlock(pos.x-3, pos.y+layer, pos.z-1, 18, 1)
+    mc.setBlock(pos.x+1, pos.y+layer, pos.z-1, 18, 1)
+    mc.setBlock(pos.x+3, pos.y+layer, pos.z-1, 18, 1)
+    
+    mc.setBlock(pos.x-3, pos.y+layer, pos.z, 18, 1)
+    mc.setBlock(pos.x+3, pos.y+layer, pos.z, 18, 1)
+    
+    mc.setBlock(pos.x-1, pos.y+layer, pos.z+3, 18, 1)
+    mc.setBlock(pos.x, pos.y+layer, pos.z+3, 18, 1)
+    mc.setBlock(pos.x+1, pos.y+layer, pos.z+3, 18, 1)
+    mc.setBlock(pos.x-1, pos.y+layer, pos.z+1, 18, 1)
+    mc.setBlock(pos.x-3, pos.y+layer, pos.z+1, 18, 1)
+    mc.setBlock(pos.x+1, pos.y+layer, pos.z+1, 18, 1)
+    mc.setBlock(pos.x+3, pos.y+layer, pos.z+1, 18, 1)
+
+    layer += 1
+    mc.setBlock(pos.x, pos.y+layer, pos.z, 17, 1)
+    mc.setBlock(pos.x, pos.y+layer, pos.z-2, 18, 1)
+    mc.setBlock(pos.x-1, pos.y+layer, pos.z-2, 18, 1)
+    mc.setBlock(pos.x+1, pos.y+layer, pos.z-2, 18, 1)
+    mc.setBlock(pos.x, pos.y+layer, pos.z+2, 18, 1)
+    mc.setBlock(pos.x-1, pos.y+layer, pos.z+2, 18, 1)
+    mc.setBlock(pos.x+1, pos.y+layer, pos.z+2, 18, 1)
+    mc.setBlock(pos.x-2, pos.y+layer, pos.z, 18, 1)
+    mc.setBlock(pos.x-2, pos.y+layer, pos.z-1, 18, 1)
+    mc.setBlock(pos.x-2, pos.y+layer, pos.z+1, 18, 1)
+    mc.setBlock(pos.x+2, pos.y+layer, pos.z, 18, 1)
+    mc.setBlock(pos.x+2, pos.y+layer, pos.z-1, 18, 1)
+    mc.setBlock(pos.x+2, pos.y+layer, pos.z+1, 18, 1)
+    
+    layer += 1
+    mc.setBlock(pos.x, pos.y+layer, pos.z, 17, 1)
+    mc.setBlock(pos.x, pos.y+layer, pos.z-1, 18, 1)
+    mc.setBlock(pos.x-1, pos.y+layer, pos.z-2, 18, 1)
+    mc.setBlock(pos.x+1, pos.y+layer, pos.z-2, 18, 1)
+    mc.setBlock(pos.x, pos.y+layer, pos.z+1, 18, 1)
+    mc.setBlock(pos.x-1, pos.y+layer, pos.z+2, 18, 1)
+    mc.setBlock(pos.x+1, pos.y+layer, pos.z+2, 18, 1)
+    mc.setBlock(pos.x-1, pos.y+layer, pos.z, 18, 1)
+    mc.setBlock(pos.x-2, pos.y+layer, pos.z+1, 18, 1)
+    mc.setBlock(pos.x-2, pos.y+layer, pos.z-1, 18, 1)
+    mc.setBlock(pos.x+1, pos.y+layer, pos.z, 18, 1)
+    mc.setBlock(pos.x+2, pos.y+layer, pos.z+1, 18, 1)
+    mc.setBlock(pos.x+2, pos.y+layer, pos.z-1, 18, 1)
+
+    layer += 1
+    mc.setBlock(pos.x, pos.y+layer, pos.z, 17, 1)
+    mc.setBlock(pos.x-1, pos.y+layer, pos.z-1, 18, 1)
+    mc.setBlock(pos.x, pos.y+layer, pos.z-1, 18, 1)
+    mc.setBlock(pos.x+1, pos.y+layer, pos.z-1, 18, 1)
+    mc.setBlock(pos.x-1, pos.y+layer, pos.z+1, 18, 1)
+    mc.setBlock(pos.x, pos.y+layer, pos.z+1, 18, 1)
+    mc.setBlock(pos.x+1, pos.y+layer, pos.z+1, 18, 1)
+    mc.setBlock(pos.x-1, pos.y+layer, pos.z, 18, 1)
+    mc.setBlock(pos.x+1, pos.y+layer, pos.z, 18, 1)
+    
+    layer += 1
+    mc.setBlock(pos.x, pos.y+layer, pos.z, 17, 1)
+    mc.setBlock(pos.x+1, pos.y+layer, pos.z, 18, 1)
+    mc.setBlock(pos.x-1, pos.y+layer, pos.z, 18, 1)
+    mc.setBlock(pos.x, pos.y+layer, pos.z+1, 18, 1)
+    mc.setBlock(pos.x, pos.y+layer, pos.z-1, 18, 1)
+
+    layer += 1
+    mc.setBlock(pos.x, pos.y+layer, pos.z, 18, 1)
+
+    layer += 1
+    mc.setBlock(pos.x, pos.y+layer, pos.z, 18, 1)
+
 # mc = Minecraft.create()
 # mc.postToChat("House time!!!")
 # pos = mc.player.getPos()

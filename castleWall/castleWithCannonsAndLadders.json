@@ -6,7 +6,7 @@
 		"wallThickness": 3,
 		"allure": true,
 		"parapet": true,
-		"pedestal": true
+		"pedestal": false
 		},
 	"color": {
 		"wallColor": [179, 1],
@@ -24,7 +24,8 @@
 		"awningColor": [126, 4],
 		"awningSupportColor": 192,
 		"awningBaseColor": [179, 1],
-		"ladderSupportColor": [17, 1]
+		"ladderSupportColor": [17, 1],
+		"pedestalColor": [2, 0]
 		},
 	"path": [
 		{"cmd": "move", "argv": 19},
