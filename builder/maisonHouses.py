@@ -558,4 +558,98 @@ def house5(mc, pos):
     mc.setBlock(pos.x, pos.y+1, pos.z, 50)
             
     
+def house6(mc, pos):
+    floorColorList = [5]
+    floorSubColorList = [0]
+    floorColor = floorColorList[random.randrange(len(floorColorList))]
+    floorSubColor = floorSubColorList[random.randrange(len(floorSubColorList))]
+    roofColorList = [5]
+    roofSubColorList = [3]
+    roofColor = roofColorList[random.randrange(len(roofColorList))]
+    roofSubColor = roofSubColorList[random.randrange(len(roofSubColorList))]
+    stiltColorList = [17, 17, 17, 17, 162, 162]
+    stiltSubColorList = [0, 1, 2, 3, 0, 1]
+    stiltColor = stiltColorList[random.randrange(len(stiltColorList))]
+    stiltSubColor = stiltSubColorList[random.randrange(len(stiltSubColorList))]     
+    wallColorList = [17]
+    wallSubColorList = [3]    
+    wallColor = wallColorList[random.randrange(len(wallColorList))]
+    wallSubColor = wallSubColorList[random.randrange(len(wallSubColorList))]
+    fenceColorList = [190]
+    fenceSubColorList = [0]
+    fenceColor =  fenceColorList[random.randrange(len(fenceColorList))]
+    fenceSubColor = fenceSubColorList[random.randrange(len(fenceSubColorList))]
+    
+    yMin = 256
+    needStilts = False
+    y, stilts = getGroundHeight(mc, pos.x-2, pos.z-2)
+    if (y < yMin):
+        yMin = y
+    if (stilts):
+        needStilts = True
+        stiltsY = y 
+    y, stilts = getGroundHeight(mc, pos.x-2, pos.z+2)
+    if (y < yMin):
+        yMin = y
+    if (stilts):
+        needStilts = True
+        stiltsY = y 
+    y, stilts = getGroundHeight(mc, pos.x+2, pos.z-2)
+    if (y < yMin):
+        yMin = y
+    if (stilts):
+        needStilts = True
+        stiltsY = y 
+    y, stilts = getGroundHeight(mc, pos.x+2, pos.z+2)
+    if (y < yMin):
+        yMin = y
+    if (stilts):
+        needStilts = True
+        stiltsY = y 
+    if (needStilts):
+        pos.y = stiltsY
+    else:
+        pos.y = yMin
+    mc.setBlocks(pos.x-3, pos.y, pos.z-3, pos.x+3, pos.y+10, pos.z+3, 0)
+    
+    # stilts
+    if (needStilts):
+        mc.setBlocks(pos.x-2, pos.y, pos.z-2, pos.x-2, pos.y-20, pos.z-2, stiltColor, stiltSubColor)
+        mc.setBlocks(pos.x-2, pos.y, pos.z+2, pos.x-2, pos.y-20, pos.z+2, stiltColor, stiltSubColor)
+        mc.setBlocks(pos.x+2, pos.y, pos.z-2, pos.x+2, pos.y-20, pos.z-2, stiltColor, stiltSubColor)
+        mc.setBlocks(pos.x+2, pos.y, pos.z+2, pos.x+2, pos.y-20, pos.z+2, stiltColor, stiltSubColor)
+        pos.y += 1
+       
+    # floor
+    mc.setBlocks(pos.x-2, pos.y-1, pos.z-2, pos.x+2, pos.y-1, pos.z+2, floorColor, floorSubColor)
+    
+    # west wall
+    mc.setBlocks(pos.x-2, pos.y, pos.z-2, pos.x-2, pos.y+2, pos.z+2, wallColor, wallSubColor)
+
+    # east wall
+    mc.setBlocks(pos.x+2, pos.y, pos.z-2, pos.x+2, pos.y+2, pos.z+2, wallColor, wallSubColor)
+    
+    # north wall
+    mc.setBlocks(pos.x+1, pos.y, pos.z-2, pos.x-1, pos.y+2, pos.z-2, wallColor, wallSubColor)
+    mc.setBlock(pos.x, pos.y, pos.z-2, 197, 1)
+    mc.setBlock(pos.x, pos.y+1, pos.z-2, 197, 8)
+    
+    # south wall
+    mc.setBlocks(pos.x+1, pos.y, pos.z+2, pos.x-1, pos.y+2, pos.z+2, wallColor, wallSubColor)
+    
+    # roof
+    mc.setBlocks(pos.x-2, pos.y+3, pos.z-2, pos.x+2, pos.y+3, pos.z+2, roofColor, roofSubColor)
+
+    # fencing
+    mc.setBlocks(pos.x-2, pos.y+4, pos.z-2, pos.x-2, pos.y+4, pos.z+2, fenceColor, fenceSubColor)
+    mc.setBlocks(pos.x+2, pos.y+4, pos.z-2, pos.x+2, pos.y+4, pos.z+2, fenceColor, fenceSubColor)
+    mc.setBlocks(pos.x+1, pos.y+4, pos.z-2, pos.x-1, pos.y+4, pos.z-2, fenceColor, fenceSubColor)
+    mc.setBlocks(pos.x+1, pos.y+4, pos.z+2, pos.x-1, pos.y+4, pos.z+2, fenceColor, fenceSubColor)
+    
+    # ladder
+    mc.setBlocks(pos.x-1, pos.y, pos.z+1, pos.x-1, pos.y+3, pos.z+1, 65)
+    
+    # torches
+    mc.setBlock(pos.x-1, pos.y, pos.z-1, 50)
+    mc.setBlock(pos.x+1, pos.y, pos.z+1, 50)
     

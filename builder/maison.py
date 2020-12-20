@@ -6,12 +6,18 @@ mc = Minecraft.create()
 mc.postToChat("House time!!!")
 pos = mc.player.getPos()
 
-mc.setBlock(pos.x-3, pos.y+0, pos.z-1, 201)
-mc.setBlock(pos.x-4, pos.y+0, pos.z-1, 24)
-mc.setBlock(pos.x-4, pos.y+0, pos.z-2, 4)
-mc.setBlock(pos.x-4, pos.y+0, pos.z-2, 4)
-mc.setBlock(pos.x-3, pos.y+0, pos.z-2, 211)
-mc.setBlock(pos.x-3, pos.y+0, pos.z-3, 2)
-mc.setBlock(pos.x-4, pos.y+0, pos.z-3, 24)
-mc.setBlock(pos.x+2, pos.y+0, pos.z-1, 201)
-mc.setBlock(pos.x-2, pos.y+0, pos.z-1, 41)
+
+# mc.setBlocks(pos.x-2, pos.y, pos.z-2, pos.x+2, pos.y, pos.z-4, 4) 
+# mc.setBlocks(pos.x+50, pos.y, pos.z-50, pos.x-50, pos.y+2, pos.z-100, 46) 
+
+
+
+
+
+
+
+
+
+
+
+

@@ -6,7 +6,7 @@ import time
 
 from house import house
 from christmasTree import christmasTree
-from maisonHouses import house1, house2, house3, house4, house5
+from maisonHouses import house1, house2, house3, house4, house5, house6
 from utils import getGroundHeight, circle
 
 mc = Minecraft.create()
@@ -25,6 +25,7 @@ def commandList():
     print(' 9) House-4')
     print('10) Circle')
     print('11) House-5')
+    print('12) House-6')
     
 while(True):
     print()
@@ -53,7 +54,7 @@ while(True):
             housePos.x += (10 * x)
             for z in range(10):
                 housePos.z += 10
-                houseStyle = random.randrange(5) + 1
+                houseStyle = random.randrange(6) + 1
                 if (houseStyle == 1):
                     house1(mc, housePos)
                 elif (houseStyle == 2):
@@ -64,6 +65,8 @@ while(True):
                     house4(mc, housePos)
                 elif (houseStyle == 5):
                     house5(mc, housePos)
+                elif (houseStyle == 6):
+                    house6(mc, housePos)
                 time.sleep(1)
     elif (command == '6'):
         house2(mc, pos)
@@ -79,8 +82,11 @@ while(True):
         circle(mc, pos, 10)
     elif (command == '11'):
         house5(mc, pos)
+    elif (command == '12'):
+        house6(mc, pos)
     else:
         print('That option is not supported yet:', command)
         
+
 #   I   LOVE    DAddY.        
 
